@@ -74,7 +74,7 @@ public class MessagingManager implements IMessagingManager {
 			
 			try { Thread.sleep(25); } catch (InterruptedException e) { Logger.STACK("", e); }
 
-			if (lastMessage > 5*60*1000 + System.currentTimeMillis()) {
+			if (lastMessage + 7*60*1000 < System.currentTimeMillis()) {
 				
 				continueRunning = false;
 				
