@@ -13,8 +13,8 @@ public class CommandPermSetGroup extends CommandBase {
 	@Override
 	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
 		
-		if (PermissionClass.getPermissionClass(getToken("permission")) == null) {
-			listOut.add(new OutgoingMessage(OutType.CHAT, getToken("permission") + " is not a valid permission class.", ((ProcPermissions)parent).channel));
+		if (PermissionClass.getPermissionClass(getToken("group")) == null) {
+			listOut.add(new OutgoingMessage(OutType.CHAT, getToken("group") + " is not a valid permission class.", parent.channel));
 			return false;
 		}
 			
@@ -25,13 +25,13 @@ public class CommandPermSetGroup extends CommandBase {
 	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
 		
 		int editorPermClass = UserManager.getPermLevel(parent.channel, getUser());
-		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("permission"));
+		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("group"));
 		System.out.println(editorPermClass + ", " + permClass.ordinal());
 		
 		if (editorPermClass > permClass.ordinal() || getUser().equalsIgnoreCase("jacksprat47")) {
 			
 			UserManager.setPermLevel(parent.channel, getToken("user"), permClass.ordinal());
-			OutgoingMessage message = new OutgoingMessage(OutType.CHAT, getToken("user") + " now has group: " + getToken("group"), ((ProcPermissions)parent).channel);
+			OutgoingMessage message = new OutgoingMessage(OutType.CHAT, getToken("user") + " now has group: " + getToken("group"), parent.channel);
 			listOut.add(message);
 			return true;
 			
