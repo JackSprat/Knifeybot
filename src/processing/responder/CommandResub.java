@@ -14,7 +14,7 @@ public class CommandResub extends CommandBase {
 	@Override
 	public boolean isMatch() {
 		
-		if (getUser().equalsIgnoreCase("twitchnotify")) 	return false;
+		if (!getUser().equalsIgnoreCase("twitchnotify")) 	return false;
 		if (getToken("user").equalsIgnoreCase("knifeybot"))	return false;
 															return true;
 	}
