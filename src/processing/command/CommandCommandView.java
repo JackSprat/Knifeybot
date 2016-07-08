@@ -4,6 +4,7 @@ import java.util.concurrent.BlockingQueue;
 
 import logger.Logger;
 import messaging.OutgoingMessage;
+import messaging.TokenList;
 import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
@@ -12,7 +13,7 @@ public class CommandCommandView extends CommandBase {
 
 	@Override
 	public boolean isMatch() {
-		
+
 		if (!getToken("alias").startsWith(":"))	return false;
 									return true;
 	}
@@ -24,7 +25,6 @@ public class CommandCommandView extends CommandBase {
 		
 		if (command != null && command != "") 	return true;		
 												return false;
-		
 		
 	}
 
@@ -54,7 +54,7 @@ public class CommandCommandView extends CommandBase {
 		
 		commandStr = commandStr.replaceAll("%me", getUser());
 		
-		return listOut.add(new OutgoingMessage(OutType.CHAT, commandStr, parent.channel));
+		return listOut.add(new OutgoingMessage(OutType.CHAT, commandStr.trim(), parent.channel));
 		
 	}
 

@@ -7,7 +7,6 @@ import messaging.OutgoingMessage;
 import messaging.TokenList;
 import users.PermissionClass;
 import users.UserManager;
-import utils.Constants;
 
 public abstract class CommandBase {
 	
@@ -36,20 +35,19 @@ public abstract class CommandBase {
 			
 			String s = formatTokens.getToken(i);
 			
-			if (s.equals("...")) return true;
-			
-			if (i >= this.getTokenLength()) return false;
-			
-			if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) {
-				//Required, named
-				if (in.getTokenList().length() < i) return false;
-			} else if (s.startsWith("[") && s.endsWith("]")) {
+			if (s.equals("...")) break;
+			try {
+				if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) continue;
+					
+			} catch (Exception e) {
+				return false;
+			}
+			if (s.startsWith("[") && s.endsWith("]")) {
 				//optional, named
 				continue;
 			} else {
 				//required, fixed
-				if (in.getTokenList().length() < i) return false;
-				if (!in.getTokenList().getToken(i).equalsIgnoreCase(formatTokens.getToken(i))) return false;
+				if (!getToken(formatTokens.getToken(i)).equalsIgnoreCase(formatTokens.getToken(i))) return false;
 			}
 		}
 		
