@@ -34,17 +34,17 @@ public abstract class CommandBase {
 		TokenList formatTokens = new TokenList(this.getFormatString());
 		for (int i = 0; i < formatTokens.length(); i++) {
 			
+			String s = formatTokens.getToken(i);
+			
+			if (s.equals("...")) return true;
+			
 			if (i >= this.getTokenLength()) return false;
 			
-			String s = formatTokens.getToken(i);
 			if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) {
 				//Required, named
 				if (in.getTokenList().length() < i) return false;
 			} else if (s.startsWith("[") && s.endsWith("]")) {
 				//optional, named
-				continue;
-			} else if (s.equals("...")) {
-				//optional, rest of command
 				continue;
 			} else {
 				//required, fixed

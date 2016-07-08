@@ -34,18 +34,23 @@ public class CommandCommandView extends CommandBase {
 		String commandStr = ((ProcCommand)parent).getCommand(getToken("alias").substring(1), getUser());
 		
 		String[] args = getToken("...").split(" ");
-		String[] commandSplitStr = commandStr.split("¦");
-		
-		for (String t : commandSplitStr) {
-			if (t.contains("%arg")) {
+		String[] commandSplitStr = commandStr.split("\\|");
+		System.out.println(commandSplitStr.length);
+		for (int i = 0; i < commandSplitStr.length; i++) {
+			
+			System.out.println(commandSplitStr[i]);
+			if (commandSplitStr[i].contains("%arg")) {
 				for (int argCounter = 1; argCounter < args.length; argCounter++) {
-					t = t.replace("%arg" + argCounter, args[argCounter]);
+					System.out.println(("Replacing %arg" + (argCounter)) + " with " + args[argCounter]);
+					commandSplitStr[i] = commandSplitStr[i].replace("%arg" + (argCounter), args[argCounter]);
 				}
-				if (t.contains("%arg")) {
-					t = "";
+				if (commandSplitStr[i].contains("%arg")) {
+					commandSplitStr[i] = "";
 				}
 			}
 		}
+		
+		commandStr = String.join("", commandSplitStr);
 		
 		commandStr = commandStr.replaceAll("%me", getUser());
 		
