@@ -43,5 +43,17 @@ public class TextUtils {
 		return str;
 		
 	}
+
+	public static String getStringPosition(int subcount) {
+		String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+	    switch (subcount % 100) {
+		    case 11:
+		    case 12:
+		    case 13:
+		        return subcount + "th";
+		    default:
+		        return subcount + suffixes[subcount % 10];
+	    }
+	}
 	
 }

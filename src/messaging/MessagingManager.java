@@ -1,12 +1,12 @@
 package messaging;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import logger.Logger;
 import processing.ProcManager;
+import state.ChannelState;
 import utils.Constants;
 
 public class MessagingManager implements IMessagingManager {
@@ -25,6 +25,7 @@ public class MessagingManager implements IMessagingManager {
 	
 	public MessagingManager(String channel) {
 		this.channel = channel;
+		ChannelState.registerChannel(channel);
 	}
 
 	@Override

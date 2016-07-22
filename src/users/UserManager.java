@@ -6,6 +6,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import logger.Logger;
+import state.ChannelState;
 import utils.DirectoryUtils;
 
 public class UserManager {
@@ -82,6 +83,7 @@ public class UserManager {
 		
 		User u = getUser(username);
 		u.subNotify(channel, length);
+		if (length == 1) ChannelState.newSubNotify(channel, username);
 		saveUser(username, u);
 		
 	}

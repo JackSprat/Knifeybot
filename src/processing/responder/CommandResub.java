@@ -5,7 +5,6 @@ import java.util.concurrent.BlockingQueue;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
-import processing.quoter.ProcQuoter;
 import users.PermissionClass;
 import users.UserManager;
 

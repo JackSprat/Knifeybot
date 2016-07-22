@@ -11,6 +11,7 @@ import channel.ChannelManager;
 import logger.Logger;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
+import state.ChannelState;
 
 public class ProcInfo extends ProcBase {
 	
@@ -79,6 +80,8 @@ public class ProcInfo extends ProcBase {
 		if (lastTick < System.currentTimeMillis() - (10 * 1000)) {
 			lastTick = System.currentTimeMillis();
 			updateChannelInfo();
+			
+			ChannelState.setStreamLive(channel, getChannelLive());
 			
 			if (streamStartTime == 0 && getChannelLive()) {
 				streamStartTime = System.currentTimeMillis();
