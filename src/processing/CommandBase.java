@@ -35,7 +35,13 @@ public abstract class CommandBase {
 			
 			String s = formatTokens.getToken(i);
 			
-			if (s.equals("...")) break;
+			if (s.equals("...")) {
+				if (getToken("...") != null && !getToken("...").trim().equals("")) {
+					break;
+				} else {
+					return false;
+				}
+			}
 			try {
 				if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) continue;
 					
