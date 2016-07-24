@@ -1,15 +1,18 @@
 package state;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import logger.Logger;
+import messaging.IncomingMessage;
 
 public class ChannelState {
 
 	private static Map<String, ChannelState> channels = new HashMap<String, ChannelState>();
 	
 	protected Map<String, Long> newSubs = new HashMap<String, Long>();
+	protected ArrayList<IncomingMessage> messagesIn = new ArrayList<IncomingMessage>();
 	protected boolean isLive = false;
 	
 	protected long lastStreamEnd = 0;
@@ -33,7 +36,7 @@ public class ChannelState {
 	}
 	
 	public static synchronized void setStreamLive(String channelName, boolean streamLive) {
-		Logger.INFO("Setting ChannelState for " + channelName + ", " + streamLive);
+		Logger.DEBUG("Setting ChannelState for " + channelName + ", " + streamLive);
 		boolean previouslyLive = channels.get(channelName).isLive;
 		channels.get(channelName).isLive = streamLive;
 		
@@ -51,6 +54,16 @@ public class ChannelState {
 	public static synchronized int getNewSubCount (String channelName) {
 		Logger.INFO("Getting subcount for " + channelName);
 		return channels.get(channelName).newSubs.size();
+	}
+	
+	public static synchronized void newMessageNotify (String channelName, IncomingMessage message) {
+		channels.get(channelName).messagesIn.add(message);
+	}
+	
+	public static synchronized ArrayList<IncomingMessage> retrieveMessages (String channelName) {
+		ArrayList<IncomingMessage> messages = (ArrayList<IncomingMessage>) channels.get(channelName).messagesIn.clone();
+		channels.get(channelName).messagesIn.clear();
+		return messages;
 	}
 	
 }

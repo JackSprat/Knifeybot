@@ -53,6 +53,7 @@ public class MessagingManager implements IMessagingManager {
 				switch(messageIRCIn.getType()) {
 					case IRCPING: case IRCINFO: case IRCCHAT: case IRCJOIN: case IRCPART: case COMMAND: case POKEMON:
 						lastMessage = System.currentTimeMillis();
+						ChannelState.newMessageNotify(channel, messageIRCIn);
 						messageToProc.add(messageIRCIn); break;
 					default:
 						break;
