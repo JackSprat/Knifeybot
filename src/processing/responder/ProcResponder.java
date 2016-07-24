@@ -15,6 +15,7 @@ public class ProcResponder extends ProcBase {
 	public ProcResponder(BlockingQueue<OutgoingMessage> listOut, String channel) {
 		
 		super(listOut, channel);
+		commands.add(new CommandUnicorn());
 		commands.add(new CommandResub());
 		commands.add(new CommandSub());
 		commands.add(new CommandActiveCounter());
