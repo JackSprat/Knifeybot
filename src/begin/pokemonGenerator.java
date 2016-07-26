@@ -1,15 +1,17 @@
 package begin;
 
+import processing.pokemon.PokemonObject;
+import processing.pokemon.moves.Move;
+import processing.pokemon.moves.MoveApplicator;
+
 public class pokemonGenerator {
 	public static void main(String[] args) {
 
-		/*String s = "pokket";
-		int counter = 0;
-		while (true) {
-			Pokemon p = new Pokemon();
-			System.out.println(counter + " " + p.getName());
-			if (p.getName().equals("Pikachu")) break;
-			counter++;*/
-
+		for (int i = 0; i < 1; i++) {
+			PokemonObject p1 = PokemonObject.generatePokemon(47);
+			PokemonObject p2 = PokemonObject.generatePokemon(47);
+			float dmg = MoveApplicator.applyMove(p1, p2, Move.TACKLE, null);
+			
+		}
 	}
 }

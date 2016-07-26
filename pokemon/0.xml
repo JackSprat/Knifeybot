@@ -1,0 +1,26 @@
+<pokemonObject pokemonUUID="0" pokemonID="1">
+   <trainerList class="java.util.HashMap"/>
+   <XP>1000000</XP>
+   <EVs length="6">
+      <int>0</int>
+      <int>0</int>
+      <int>0</int>
+      <int>0</int>
+      <int>0</int>
+      <int>0</int>
+   </EVs>
+   <IVs length="6">
+      <int>27</int>
+      <int>14</int>
+      <int>13</int>
+      <int>5</int>
+      <int>4</int>
+      <int>5</int>
+   </IVs>
+   <ability>0</ability>
+   <moveID length="4">0, 0, 0, 0</moveID>
+   <movePP length="4">0, 0, 0, 0</movePP>
+   <movePPUps length="4">0, 0, 0, 0</movePPUps>
+   <Nickname></Nickname>
+   <isFemale>false</isFemale>
+</pokemonObject>

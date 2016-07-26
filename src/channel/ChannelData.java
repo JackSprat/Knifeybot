@@ -81,7 +81,6 @@ public class ChannelData {
 	}
 	
 	public String getGameAttribute(String game, String attribute) {
-		// TODO Auto-generated method stub
 		return gameMap.get(game).getAttribute(attribute);
 	}
 	public void addGameAttribute(String game, String attribute, String value) {
