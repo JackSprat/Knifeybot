@@ -73,7 +73,11 @@ public abstract class CommandBase {
 		TokenList formatTokens = new TokenList(this.getFormatString());
 		for (int i = 0; i < formatTokens.length(); i++) {
 			if (i >= this.getTokenLength()) return "";
-			if (formatTokens.getToken(i).contains(tokenName)) {
+			if (formatTokens.getToken(i).equals(tokenName) ||
+					formatTokens.getToken(i).equals("[" + tokenName + "]") ||
+					formatTokens.getToken(i).equals("<" + tokenName + ">") ||
+					formatTokens.getToken(i).equals("{" + tokenName + "}") ||
+					formatTokens.getToken(i).equals("(" + tokenName + ")")) {
 				if (tokenName.equals("...")) {
 					String s = "";
 					for (int rest = i; rest < in.getTokenList().length(); rest++) {
