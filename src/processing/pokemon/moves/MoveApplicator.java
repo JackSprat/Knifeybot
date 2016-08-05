@@ -3,7 +3,7 @@ package processing.pokemon.moves;
 import java.util.concurrent.BlockingQueue;
 
 import messaging.OutgoingMessage;
-import processing.pokemon.PokemonObject;
+import processing.pokemon.creation.PokemonObject;
 
 public class MoveApplicator {
 

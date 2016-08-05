@@ -1,4 +1,4 @@
-package processing.pokemon;
+package processing.pokemon.creation;
 
 import java.io.File;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class PokemonObject {
 	@Attribute
 	private int pokemonID;
 	
-	@ElementMap(entry="date", key="name", attribute=true, inline=false, required = true)
+	@ElementMap(entry="date", key="name", attribute=true, inline=false, required = false)
 	private Map<String, Long> trainerList = new HashMap<String, Long>();
 	
 	@Element
@@ -53,7 +53,7 @@ public class PokemonObject {
 	@Element
 	private int movePPUps[];
 	
-	@Element
+	@Element(required=false)
 	private String Nickname = "";
 	
 	@Element
@@ -78,8 +78,10 @@ public class PokemonObject {
 		savePokemon(this);
 	}
 	
-	public int getLevel() { return (int) Math.pow(this.XP, (1.0f/3.0f)); }
-
+	public int getLevel() { return Math.max((int) Math.pow(this.XP, (1.0f/3.0f)), 1); }
+	public long getID() { return pokemonUUID; }
+	
+	
 	public int getBaseHP() {
 		int baseHP = (2 * BaseValues.getBaseValues(pokemonID).baseStats[0]) + this.IVs[0] + (this.EVs[0] / 4);
 		baseHP = (baseHP * this.getLevel()) / 100;
@@ -103,11 +105,12 @@ public class PokemonObject {
 		return stat + 5;
 	}
  	public static synchronized PokemonObject getPokemon(long UUID) {
-		
+		System.out.println(UUID);
 		File pokefile = getFile(UUID);
 
 		try {
 			PokemonObject p = pokefile.exists() ? serializer.read(PokemonObject.class, pokefile) : null;
+			System.out.println(p.pokemonID);
 			return p;
 		} catch (Exception e1) {
 			Logger.STACK("Error retrieving pokemon - " + UUID, e1);
@@ -118,9 +121,9 @@ public class PokemonObject {
 	}
 	private static synchronized File getFile(long UUID) {
 		
-		DirectoryUtils.createDirectories("pokemon");
+		DirectoryUtils.createDirectories("pokemon/pokemon");
 		
-		String filename = "pokemon/" + UUID + ".xml";
+		String filename = "pokemon/pokemon/" + UUID + ".xml";
 		return new File(filename);
 		
 	}
@@ -134,7 +137,7 @@ public class PokemonObject {
 		}
 		
 	}
-	
+	public PokemonObject() {}
 	private PokemonObject(int ID, int XP) {
 		this.pokemonUUID = getUUID();
 		this.pokemonID = ID;

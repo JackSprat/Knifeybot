@@ -1,6 +1,6 @@
 package begin;
 
-import processing.pokemon.PokemonObject;
+import processing.pokemon.creation.PokemonObject;
 import processing.pokemon.moves.Move;
 import processing.pokemon.moves.MoveApplicator;
 

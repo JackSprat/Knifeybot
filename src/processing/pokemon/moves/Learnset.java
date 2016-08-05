@@ -3,7 +3,7 @@ package processing.pokemon.moves;
 import java.util.ArrayList;
 import java.util.List;
 
-import processing.pokemon.BaseValues;
+import processing.pokemon.creation.BaseValues;
 
 public class Learnset {
 

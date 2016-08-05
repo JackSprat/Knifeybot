@@ -45,7 +45,7 @@ public class ProcManager extends Thread implements Runnable {
 		processors.add(new ProcHelp(listOut, channel));
 		processors.add(new ProcInfo(listOut, channel));
 		processors.add(new ProcRepeat(listOut, channel));
-		//processors.add(new ProcTwitter(listOut, channel));
+		processors.add(new ProcPokemon(listOut, channel));
 		processors.add(new ProcResponder(listOut, channel));
 		
 		//if (channel == "pokket") processors.add(new ProcPokemon(listOut, channel));

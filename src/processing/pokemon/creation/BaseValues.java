@@ -1,4 +1,4 @@
-package processing.pokemon;
+package processing.pokemon.creation;
 
 import processing.pokemon.moves.MoveType;
 

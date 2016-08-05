@@ -11,6 +11,8 @@ public class ProcPokemon extends ProcBase {
 		
 		super(listOut, channel);
 		
+		commands.add(new CommandStarter());
+		commands.add(new CommandViewParty());
 	}
 	
 }
