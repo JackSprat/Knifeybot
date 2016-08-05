@@ -30,7 +30,7 @@ import javafx.stage.Stage;
 
 public class defaultRunPokket extends Application {
 	
-	private static String[] test = {"mandalorianfury", "dashadow", "pokket", "jacksprat47", "stedeb", "fragmentshader", "filipenergy", "themeta4gaming"};
+	private static String[] test = {"woundedpoptart", "mandalorianfury", "dashadow", "pokket", "jacksprat47", "stedeb", "fragmentshader", "filipenergy", "themeta4gaming"};
 	private static Map<String, ChannelTab> channelTabList = new HashMap<String, ChannelTab>();
 	
 	public static void main(String[] args) throws InterruptedException {

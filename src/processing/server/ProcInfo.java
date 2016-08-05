@@ -33,6 +33,10 @@ public class ProcInfo extends ProcBase {
 		commands.add(new CommandStatus());
 		commands.add(new CommandUptime());
 		commands.add(new CommandSub());
+		
+		commands.add(new CommandDeaths());
+		commands.add(new CommandDeathsPlus());
+		commands.add(new CommandDeathsMinus());
 	}
 	
 	public String getCurrentGame() {

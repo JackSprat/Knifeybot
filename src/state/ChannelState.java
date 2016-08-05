@@ -14,6 +14,7 @@ public class ChannelState {
 	protected Map<String, Long> newSubs = new HashMap<String, Long>();
 	protected ArrayList<IncomingMessage> messagesIn = new ArrayList<IncomingMessage>();
 	protected boolean isLive = false;
+	protected int deaths = 0;
 	
 	protected long lastStreamEnd = 0;
 
@@ -64,6 +65,15 @@ public class ChannelState {
 		ArrayList<IncomingMessage> messages = (ArrayList<IncomingMessage>) channels.get(channelName).messagesIn.clone();
 		channels.get(channelName).messagesIn.clear();
 		return messages;
+	}
+	
+	public static synchronized void addDeaths(String channelName, int value) {
+		int previousDeaths = channels.get(channelName).deaths;
+		channels.get(channelName).deaths = previousDeaths + value;
+	}
+	
+	public static synchronized int getDeaths(String channelName) {
+		return channels.get(channelName).deaths;
 	}
 	
 }

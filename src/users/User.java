@@ -13,7 +13,6 @@ public class User {
 	
 	@ElementMap(entry="reply", key="alias", attribute=true, inline=false, required = false)
 	private Map<String, String> commandMap = new HashMap<String, String>();
-
 	
 	public void addPermission(String channel, String perm, boolean grant) {
 		
@@ -139,6 +138,7 @@ public class User {
 		
 
 	}
+	
 	
 	
 }
