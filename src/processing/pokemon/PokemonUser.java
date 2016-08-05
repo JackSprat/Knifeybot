@@ -1,5 +1,5 @@
 package processing.pokemon;
 
-public enum EggGroup {
+public class PokemonUser {
 
 }

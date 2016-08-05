@@ -2,18 +2,22 @@ package processing.pokemon;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.simpleframework.xml.*;
 import org.simpleframework.xml.core.Persister;
 
 import logger.Logger;
+import processing.pokemon.moves.Learnset;
+import processing.pokemon.moves.Move;
 import processing.pokemon.moves.MoveType;
 import utils.DirectoryUtils;
 
 @Root
 public class PokemonObject {
 	
+	private static long lastUUID = -1;
 	private static Serializer serializer = new Persister();
 
 	@Attribute
@@ -27,6 +31,9 @@ public class PokemonObject {
 	
 	@Element
 	private int XP;
+	
+	@Element
+	private int HP;
 	
 	@ElementArray
 	private int[] EVs;
@@ -52,6 +59,7 @@ public class PokemonObject {
 	@Element
 	private boolean isFemale;
 
+
 	public synchronized MoveType[] getTypes() { return BaseValues.getBaseValues(pokemonID).types; }
 	
 
@@ -64,13 +72,25 @@ public class PokemonObject {
 		
 	}
 	
+	public void useMove(int moveIndex) {
+		moveIndex = Math.min(Math.max(0, moveIndex), 3);
+		movePP[moveIndex]--;
+		savePokemon(this);
+	}
+	
 	public int getLevel() { return (int) Math.pow(this.XP, (1.0f/3.0f)); }
 
-	public int getHP() {
-		int HP = (2 * BaseValues.getBaseValues(pokemonID).baseStats[0]) + this.IVs[0] + (this.EVs[0] / 4);
-		HP = (HP * this.getLevel()) / 100;
-		return HP + this.getLevel() + 10;
+	public int getBaseHP() {
+		int baseHP = (2 * BaseValues.getBaseValues(pokemonID).baseStats[0]) + this.IVs[0] + (this.EVs[0] / 4);
+		baseHP = (baseHP * this.getLevel()) / 100;
+		return baseHP + this.getLevel() + 10;
 	}
+	
+	public void modifyHP(int modify) {
+		this.HP = Math.max(0, Math.min(this.getBaseHP(), this.HP + modify));
+		savePokemon(this);
+	}
+	public int getHP() { 	return this.HP;}
 	public int getAtk() { 	return this.getStat(1);}
 	public int getDef() { 	return this.getStat(2);}
 	public int getSPAtk() { return this.getStat(3);}
@@ -80,7 +100,6 @@ public class PokemonObject {
 		
 		int stat = (2 * BaseValues.getBaseValues(pokemonID).baseStats[statValue]) + this.IVs[statValue] + (this.EVs[statValue] / 4);
 		stat = (stat * this.getLevel()) / 100;
-		System.out.println(statValue + ": " + BaseValues.getBaseValues(pokemonID).baseStats[statValue] + "," + this.IVs[statValue]);
 		return stat + 5;
 	}
  	public static synchronized PokemonObject getPokemon(long UUID) {
@@ -117,10 +136,13 @@ public class PokemonObject {
 	}
 	
 	private PokemonObject(int ID, int XP) {
+		this.pokemonUUID = getUUID();
 		this.pokemonID = ID;
 		this.XP = XP;
+		
 		this.IVs = new int[6];
 		this.EVs = new int[6];
+		this.HP = this.getBaseHP();
 		this.ability = (int) (Math.random() * 2);
 		
 		//POPULATE MOVEIDS MOVEPPS AND PPUPS
@@ -128,17 +150,37 @@ public class PokemonObject {
 		this.movePP = new int[]{0,0,0,0};
 		this.movePPUps = new int[]{0,0,0,0};
 		
+		List<Move> moveset = Learnset.getLearnset(BaseValues.getBaseValues(ID), getLevel());
+		
+		for (int i = 0; i < 4 && i < moveset.size(); i++) {
+			moveID[i] = moveset.get(moveset.size() - (i + 1)).ID;
+			movePP[i] = moveset.get(moveset.size() - (i + 1)).basePP;
+		}
 		for (int i = 0; i < 6; i++) {
 			this.IVs[i] = (int) (Math.random() * 32);
 			this.EVs[i] = 0;
 		}
 		
+		this.isFemale = Math.random() * 100 > BaseValues.getBaseValues(ID).percentageMale;
+		
 	}
 	
-	public static synchronized PokemonObject generatePokemon(int generatorID) {
+	private long getUUID() {
+		long currentUUID = System.currentTimeMillis();
+		if (lastUUID == currentUUID) {
+			currentUUID++;
+		}
+		lastUUID = currentUUID;
+		return currentUUID;
+	}
+
+
+	public static synchronized PokemonObject generatePokemon(int generatorID, int pokemonID) {
 		PokemonObject poke = null;
 		if (generatorID == 47) {
-			poke = new PokemonObject(1,(int) (1000000));
+			poke = new PokemonObject(1,(int) (Math.random() * 10000));
+		} else if (generatorID == 1) {
+			poke = new PokemonObject(pokemonID, 0);
 		}
 		PokemonObject.savePokemon(poke);
 		return poke;

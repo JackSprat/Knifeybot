@@ -2,6 +2,6 @@ package processing.pokemon.moves;
 
 public enum MoveTarget {
 
-	ANY_ADJACENT,
-	UNKNOWN
+	ONE_ADJACENT_ANY,
+	UNKNOWN, ALL_ADJACENT_ENEMY
 }

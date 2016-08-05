@@ -7,14 +7,33 @@ import processing.pokemon.PokemonObject;
 
 public class MoveApplicator {
 
-	public static float applyMove(PokemonObject user, PokemonObject target, Move move, BlockingQueue<OutgoingMessage> listOut) {
+	public static void applyMove(PokemonObject user, PokemonObject target, Move move, BlockingQueue<OutgoingMessage> listOut) {
 		
-		//IF MOVE MAKES CONTACT
+		if (move.hasFacet(MoveFacet.MAKES_CONTACT)) {
+			//NULLIFY MOVE IF MAKES CONTACT
+		}
 		
-		//IF MOVE AFFECTED BY PROTECT
+		if (move.hasFacet(MoveFacet.AFFECTED_BY_KINGS_ROCK)) {
+			//FLINCH APPLICATOR
+		}
 		
-		//IF MOVE AFFECTED BY 
-		return calculateDamage(user, target, move, listOut);
+		if (move.hasFacet(MoveFacet.AFFECTED_BY_PROTECT)) {
+			//PROTECT
+		}
+		
+		
+		if (move.hasFacet(MoveFacet.DEALS_DAMAGE)) {
+			int damage = (int) calculateDamage(user, target, move, listOut);
+			target.modifyHP(-damage);
+		}
+		
+		if (move.hasFacet(MoveFacet.APPLIES_STATUS_EFFECT)) {
+			if (move == Move.GROWL) {
+				//apply attack stage mod
+			}
+			
+		}
+
 	}
 	
 	private static float calculateDamage(PokemonObject user, PokemonObject target, Move move, BlockingQueue<OutgoingMessage> listOut) {
@@ -50,11 +69,12 @@ public class MoveApplicator {
 		//CRITICAL
 		
 		//OTHER
+		//calculate stage modifiers
 		
 		//RANDOM
 		double randomMult = (Math.random() * 0.15) + 0.85;
 		damage *= randomMult;
-
+		
 		return damage;
 		
 		

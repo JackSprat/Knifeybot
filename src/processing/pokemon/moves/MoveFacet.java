@@ -1,0 +1,10 @@
+package processing.pokemon.moves;
+
+public enum MoveFacet {
+
+	AFFECTED_BY_KINGS_ROCK,
+	AFFECTED_BY_PROTECT,
+	DEALS_DAMAGE,
+	MAKES_CONTACT, AFFECTED_BY_MAGIC_COAT, IS_SOUND_BASED, APPLIES_STATUS_EFFECT;
+	
+}
