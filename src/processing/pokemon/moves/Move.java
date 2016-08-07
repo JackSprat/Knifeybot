@@ -1,5 +1,8 @@
 package processing.pokemon.moves;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Move {
 
 	TACKLE(33, 35, 35, 95, MoveType.NORMAL, MoveTarget.ONE_ADJACENT_ANY, "A physical attack in which the user charges, full body, into the foe.", "Tackle", new MoveFacet[] {MoveFacet.AFFECTED_BY_PROTECT, MoveFacet.AFFECTED_BY_KINGS_ROCK, MoveFacet.MAKES_CONTACT, MoveFacet.DEALS_DAMAGE}),
@@ -12,6 +15,9 @@ public enum Move {
 	public final String description, name;
 	public final MoveFacet[] facets;
 	
+	private static final Map<Integer, Move> lookup = new HashMap<Integer, Move>();
+    static { for(Move d : Move.values()) lookup.put(d.getMoveID(), d); }
+    
 	private Move(int ID, int basePP, int power, int accuracy, MoveType type, MoveTarget target, String description, String name, MoveFacet[] facets) {
         this.ID = ID;
         this.basePP = basePP;
@@ -37,6 +43,10 @@ public enum Move {
 	public MoveTarget getMoveTarget() { return target;}
 	public String getDescription() { return description; }
 	public String getName() { return name; }
+	public int getMoveID() { return ID; }
+	public static Move getMove(int ID) {
+		return lookup.get(ID);
+	}
 	
 	@Override
 	public String toString() { return this.name + ": " + description; }

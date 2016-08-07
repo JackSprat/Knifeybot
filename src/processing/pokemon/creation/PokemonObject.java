@@ -1,7 +1,9 @@
 package processing.pokemon.creation;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +94,11 @@ public class PokemonObject {
 		this.HP = Math.max(0, Math.min(this.getBaseHP(), this.HP + modify));
 		savePokemon(this);
 	}
+	
+	public int[] getMoves() { return moveID; }
+	public int[] getMovesPP() { return movePP; }
+	public String getName() { return BaseValues.getBaseValues(this.pokemonID).name(); }
+	public String getNickname() {	return this.Nickname;}
 	public int getHP() { 	return this.HP;}
 	public int getAtk() { 	return this.getStat(1);}
 	public int getDef() { 	return this.getStat(2);}
@@ -153,11 +160,18 @@ public class PokemonObject {
 		this.movePP = new int[]{0,0,0,0};
 		this.movePPUps = new int[]{0,0,0,0};
 		
-		List<Move> moveset = Learnset.getLearnset(BaseValues.getBaseValues(ID), getLevel());
+		Map<Move, Integer> moveset = Learnset.getLearnset(BaseValues.getBaseValues(ID));
 		
-		for (int i = 0; i < 4 && i < moveset.size(); i++) {
-			moveID[i] = moveset.get(moveset.size() - (i + 1)).ID;
-			movePP[i] = moveset.get(moveset.size() - (i + 1)).basePP;
+		Iterator<Map.Entry<Move, Integer>> iter = moveset.entrySet().iterator();
+		while (iter.hasNext()) {
+		    Map.Entry<Move, Integer> entry = iter.next();
+		    if (entry.getValue() > this.getLevel()) iter.remove();
+		}
+		
+		List<Move> movelist = new ArrayList<Move>(moveset.keySet());
+		for (int i = 0; i < 4 && i < movelist.size(); i++) {
+			moveID[i] = movelist.get(movelist.size() - (i + 1)).ID;
+			movePP[i] = movelist.get(movelist.size() - (i + 1)).basePP;
 		}
 		for (int i = 0; i < 6; i++) {
 			this.IVs[i] = (int) (Math.random() * 32);

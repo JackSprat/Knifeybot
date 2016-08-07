@@ -43,7 +43,13 @@ public abstract class CommandBase {
 				}
 			}
 			try {
-				if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) continue;
+				if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) {
+					if (getToken(s) != null && !getToken(s).trim().equals("")) {
+						continue;
+					} else {
+						return false;
+					}
+				}
 					
 			} catch (Exception e) {
 				return false;
@@ -95,7 +101,7 @@ public abstract class CommandBase {
 		return "";
 	}
 
-	private int getTokenLength() {
+	public int getTokenLength() {
 		return this.in.getTokenList().length();
 	}
 

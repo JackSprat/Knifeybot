@@ -13,6 +13,8 @@ public class ProcPokemon extends ProcBase {
 		
 		commands.add(new CommandStarter());
 		commands.add(new CommandViewParty());
+		commands.add(new CommandViewPokemon());
+		
 	}
 	
 }

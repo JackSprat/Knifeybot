@@ -27,6 +27,18 @@ public class PokemonUser {
 		PokemonUser user = getUser(username);
 		return user.partyList.stream().mapToLong(l -> l).toArray();
 	}
+
+	public static long[] getPC(String username, int i) {
+		PokemonUser user = getUser(username);
+		if (i == -1) {
+			return user.pcList.stream().mapToLong(l -> l).toArray();
+		} else {
+			int max = (i*5)+5;
+			if (i*5 >= user.pcList.size()) return null;
+			if (max == user.pcList.size()) max = user.pcList.size();
+			return user.pcList.subList(i*5, max).stream().mapToLong(l -> l).toArray();
+		}
+	}
 	
 	public static synchronized void setUsedStarter(String username) {
 		PokemonUser user = getUser(username);
@@ -90,6 +102,7 @@ public class PokemonUser {
 		} catch (Exception e) {
 			Logger.STACK("Error writing pokeuser - " + username, e);
 		}
+		
 	}
 	
 }

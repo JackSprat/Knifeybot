@@ -1,26 +1,26 @@
 package processing.pokemon.moves;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import processing.pokemon.creation.BaseValues;
 
 public class Learnset {
 
-	public static List<Move> getLearnset(BaseValues pokemon, int level) {
+	public static Map<Move, Integer> getLearnset(BaseValues pokemon) {
 		
-		List<Move> moveset = new ArrayList<Move>();
+		Map<Move, Integer> moveset = new HashMap<Move, Integer>();
 		
 		switch (pokemon) {
 		case BULBASAUR:
-			moveset.add(Move.TACKLE);
+			moveset.put(Move.TACKLE, 1);
 			break;
 		case CHARMANDER:
-			moveset.add(Move.TACKLE);
-			moveset.add(Move.GROWL);
+			moveset.put(Move.TACKLE, 1);
+			moveset.put(Move.GROWL, 1);
 			break;
 		case SQUIRTLE:
-			moveset.add(Move.TACKLE);
+			moveset.put(Move.TACKLE, 1);
 			break;
 		default:
 			break;
