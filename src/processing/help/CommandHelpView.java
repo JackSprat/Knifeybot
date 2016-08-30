@@ -19,6 +19,6 @@ public class CommandHelpView extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "help.view"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":khelp"; }
+	@Override public String getFormatTokens() 				{ return "khelp"; }
 	@Override public String getHelpString() 				{ return "Views this page"; }
 }

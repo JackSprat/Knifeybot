@@ -31,7 +31,7 @@ public class CommandPermShow extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "permissions.setgroup"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":kperm show [user]"; }
+	@Override public String getFormatTokens() 				{ return "kperm show #user"; }
 	@Override public String getHelpString() 				{ return "This command shows permissions, optionally for [user]"; }
 	
 }

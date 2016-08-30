@@ -33,7 +33,7 @@ public class CommandServer extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "server.view"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":server"; }
+	@Override public String getFormatTokens() 				{ return "server"; }
 	@Override public String getHelpString() 				{ return "This command shows what the current game's server is set to"; }
 
 }

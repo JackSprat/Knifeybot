@@ -31,7 +31,7 @@ public class CommandSub extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "server.ksub"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":ksub [user]"; }
+	@Override public String getFormatTokens() 				{ return "ksub #user"; }
 	@Override public String getHelpString() 				{ return "Use to check how long you're subbed for"; }
 
 }

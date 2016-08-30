@@ -14,6 +14,6 @@ public interface IIncomingMessage {
 
 	public abstract Date getDate();
 
-	public abstract TokenList getTokenList();
+	public abstract String[] getTokenList();
 
 }

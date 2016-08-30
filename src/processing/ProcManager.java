@@ -42,9 +42,9 @@ public class ProcManager extends Thread implements Runnable {
 		processors.add(new ProcPermissions(listOut, channel));
 		processors.add(new ProcCommand(listOut, channel));
 		processors.add(new ProcUptime(listOut, channel));
-		processors.add(new ProcHelp(listOut, channel));
+		//processors.add(new ProcHelp(listOut, channel));
 		processors.add(new ProcInfo(listOut, channel));
-		processors.add(new ProcRepeat(listOut, channel));
+		//processors.add(new ProcRepeat(listOut, channel));
 		processors.add(new ProcPokemon(listOut, channel));
 		processors.add(new ProcResponder(listOut, channel));
 		
@@ -107,7 +107,7 @@ public class ProcManager extends Thread implements Runnable {
 			for (CommandBase command : processor.getCommands()) {
 				body += "<p>" + command.getClass().getSimpleName() + " - ";
 				body += command.getHelpString().replace("<", "&lt;").replace(">", "&gt;") + "<br />";
-				body += "Format: " + command.getFormatString().replace("<", "&lt;").replace(">", "&gt;") + "<br />";
+				body += "Format: " + "REIMPLEMENT FORMAT TOKENS FOR WEB";
 				body += "Required Permissions: " + command.getPermissionString() + "</p>";
 			}
 		}

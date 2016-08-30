@@ -34,7 +34,7 @@ public class CommandUptime extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "server.uptime"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":uptime"; }
+	@Override public String getFormatTokens() 				{ return "uptime"; }
 	@Override public String getHelpString() 				{ return "Shows current stream uptime"; }
 
 }

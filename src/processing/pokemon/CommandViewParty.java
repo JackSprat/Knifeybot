@@ -30,7 +30,7 @@ public class CommandViewParty extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "kpokemon.viewparty"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":poke party"; }
+	@Override public String getFormatTokens() 				{ return "poke party #user"; }
 	@Override public String getHelpString() 				{ return "This command views the user's party."; }
 	
 }

@@ -50,7 +50,7 @@ public class CommandStarter extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "kpokemon.starter"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":poke starter <id>"; }
+	@Override public String getFormatTokens() 				{ return "poke starter @id"; }
 	@Override public String getHelpString() 				{ return "This command slects a starter pokemon."; }
 	
 }

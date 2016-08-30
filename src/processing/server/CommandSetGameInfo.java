@@ -15,7 +15,7 @@ public class CommandSetGameInfo extends CommandBase {
 		String game = ((ProcInfo)parent).getCurrentGame();
 
 		if (game != "") {
-			((ProcInfo)parent).setGameAttribute("gameinfo", getToken("..."));
+			((ProcInfo)parent).setGameAttribute("gameinfo", getToken("+"));
 			listOut.add(new OutgoingMessage(OutType.CHAT, "Server gameinfo set", parent.channel));
 		}
 		
@@ -25,7 +25,7 @@ public class CommandSetGameInfo extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "gameinfo.set"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":gameinfo ..."; }
+	@Override public String getFormatTokens() 				{ return "gameinfo +"; }
 	@Override public String getHelpString() 				{ return "This command sets the current game's info"; }
 
 }

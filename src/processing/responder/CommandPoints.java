@@ -27,7 +27,7 @@ public class CommandPoints extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "responder.viewpoints"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":kpoints [user]"; }
+	@Override public String getFormatTokens() 				{ return "kpoints #user"; }
 	@Override public String getHelpString() 				{ return "View current point total"; }
 
 }

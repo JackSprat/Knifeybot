@@ -4,7 +4,6 @@ import java.util.concurrent.BlockingQueue;
 
 import messaging.IIncomingMessage;
 import messaging.OutgoingMessage;
-import messaging.TokenList;
 import users.PermissionClass;
 import users.UserManager;
 
@@ -15,7 +14,7 @@ public abstract class CommandBase {
 	
 	public abstract String 			getPermissionString();
 	public abstract PermissionClass getPermissionClass();
-	public abstract String			getFormatString();
+	public abstract String			getFormatTokens();
 	public abstract String			getHelpString();
 
 	public void setParent(ProcBase parent) {
@@ -30,38 +29,53 @@ public abstract class CommandBase {
 	//Validation process for chat message
 	public boolean validate(BlockingQueue<OutgoingMessage> listOut) {
 		
-		TokenList formatTokens = new TokenList(this.getFormatString());
-		for (int i = 0; i < formatTokens.length(); i++) {
+		String[] formatTokens = this.getFormatTokens().split(" ");
+		String[] messageTokens = in.getTokenList().clone();
+		
+		if (!messageTokens[0].startsWith(":")) return false;
+		
+		messageTokens[0] = messageTokens[0].substring(1);
+		
+		for (int i = 0; i < formatTokens.length; i++) {
 			
-			String s = formatTokens.getToken(i);
+			String formatToken = formatTokens[i];
 			
-			if (s.equals("...")) {
-				if (getToken("...") != null && !getToken("...").trim().equals("")) {
-					break;
-				} else {
-					return false;
-				}
+			System.out.println("Checking for token: " + formatToken);
+			//0 or more tokens remaining
+			if (formatToken.equals("*")) break;
+			//1 or more tokens remaining
+			if (formatToken.equals("+")) {
+				if (messageTokens.length >= formatTokens.length) break;
+				
 			}
-			try {
-				if ((s.startsWith("<") || s.startsWith(":<")) && s.endsWith(">")) {
-					if (getToken(s) != null && !getToken(s).trim().equals("")) {
-						continue;
-					} else {
-						return false;
-					}
-				}
-					
-			} catch (Exception e) {
-				return false;
+			
+			//Optional, named
+			if (formatToken.startsWith("#")) continue;
+			
+			//Only required remaining, so quit if no message tokens remaining
+			if (messageTokens.length <= i) return false;
+			
+			String messageToken = messageTokens[i];
+			
+			//Required, named
+			if (formatToken.startsWith("@")) continue;
+
+			//Required, match only
+			String[] possibleTokens = {formatToken};
+			
+			//Split out possible matchable tokens
+			if (formatToken.contains("|")) possibleTokens = formatToken.split("|");
+			
+			//Check each token and fail if no match
+			boolean found = false;
+			for (String token : possibleTokens) {
+				if (token.equalsIgnoreCase(messageToken)) found = true;
 			}
-			if (s.startsWith("[") && s.endsWith("]")) {
-				//optional, named
-				continue;
-			} else {
-				//required, fixed
-				if (!getToken(formatTokens.getToken(i)).equalsIgnoreCase(formatTokens.getToken(i))) return false;
-			}
+
+			if (!found) return false;
 		}
+		
+		System.out.println(this.toString());
 		
 		if (!isMatch()) 																	return false;	//if match info is invalid (custom)
 		if (!UserManager.hasPermission(parent.channel, in.getUser(), 
@@ -72,37 +86,39 @@ public abstract class CommandBase {
 		
 	}
 	
-	public String getUser() { if (in != null) return in.getUser(); return null; }
-	public void setMessage(IIncomingMessage in2) { this.in = in2; }
-	public String getToken(String tokenName) {
-
-		TokenList formatTokens = new TokenList(this.getFormatString());
-		for (int i = 0; i < formatTokens.length(); i++) {
-			if (i >= this.getTokenLength()) return "";
-			if (formatTokens.getToken(i).equals(tokenName) ||
-					formatTokens.getToken(i).equals("[" + tokenName + "]") ||
-					formatTokens.getToken(i).equals("<" + tokenName + ">") ||
-					formatTokens.getToken(i).equals("{" + tokenName + "}") ||
-					formatTokens.getToken(i).equals("(" + tokenName + ")")) {
-				if (tokenName.equals("...")) {
-					String s = "";
-					for (int rest = i; rest < in.getTokenList().length(); rest++) {
-						s += " " + in.getTokenList().getToken(rest);
-					}
-					
-					return s;
+	public String getToken(String token) {
+		
+		String[] formatTokens = this.getFormatTokens().split(" ");
+		String[] messageTokens = in.getTokenList();
+		
+		for (int i = 0; i < formatTokens.length; i++) {
+			
+			if (messageTokens.length <= i) return "";
+			
+			String formatToken = formatTokens[i];
+			
+			
+			if (	!token.equalsIgnoreCase(formatToken) && 
+					!token.equalsIgnoreCase(formatToken.substring(1))) continue;
+			
+			
+			//0 or more tokens remaining
+			if (formatToken.equals("*") || formatToken.equals("+")) {
+				String tokens = "";
+				for (int j = i; j < messageTokens.length; j++) {
+					tokens += messageTokens[j] + " ";
 				}
-				
-				return in.getTokenList().getToken(i);
+				return tokens;
 			}
+		
+			return messageTokens[i];
 			
 		}
 		
 		return "";
 	}
-
-	public int getTokenLength() {
-		return this.in.getTokenList().length();
-	}
+	
+	public String getUser() { if (in != null) return in.getUser(); return null; }
+	public void setMessage(IIncomingMessage in2) { this.in = in2; }
 
 }

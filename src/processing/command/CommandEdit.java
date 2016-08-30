@@ -19,14 +19,14 @@ public class CommandEdit extends CommandBase {
 	@Override
 	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
 		
-		UserManager.addCommand(getUser(), getToken("alias"), getToken("..."));
-		return listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", custom response \"" + getToken("alias") + "\" edited", parent.channel));
+		UserManager.addCommand(getUser(), getToken("@alias"), getToken("+"));
+		return listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", custom response \"" + getToken("@alias") + "\" edited", parent.channel));
 		
 	}
 
 	@Override public String getPermissionString() 			{ return "command.edit"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":kcommand edit <alias> ..."; }
-	@Override public String getHelpString() 				{ return "This command edits a response \"...\" when you type :<alias>"; }
+	@Override public String getFormatTokens() 				{ return "kcommand edit @alias +"; }
+	@Override public String getHelpString() 				{ return "This command edits a response \"+\" when you type :alias"; }
 
 }

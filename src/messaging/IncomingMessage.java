@@ -20,7 +20,7 @@ public class IncomingMessage implements IIncomingMessage {
 	private String ID = "NOSTRING";
 	private String user = "NOSTRING";
 	private Date date;
-	private TokenList tokenList;
+	private String[] tokenList;
 	
 	public IncomingMessage(String message) {
 		
@@ -35,7 +35,7 @@ public class IncomingMessage implements IIncomingMessage {
 			if (splitLines[1].equals("ENCOUNTER")) {
 				this.ID = "POKEMONENCOUNTER";
 				this.user = "pokemon";
-				this.tokenList = new TokenList(originalString);
+				this.tokenList = originalString.split(" ");
 			}
 			
 		} else if (originalString.startsWith("PING")) {
@@ -56,14 +56,14 @@ public class IncomingMessage implements IIncomingMessage {
 				if (messageMetadata[0].equals("tmi.twitch.tv")) {
 					
 					this.type = InType.IRCINFO;
-					this.tokenList = new TokenList(splitLines[2]);
+					this.tokenList = splitLines[2].split(" ");
 					this.ID = messageMetadata[1];
 					
 				//CHAT message
 				} else if (messageMetadata[1].equals("PRIVMSG")) {
 					
 					this.type = InType.IRCCHAT;
-					this.tokenList = new TokenList(splitLines[2]);
+					this.tokenList = splitLines[2].split(" ");
 					this.user = messageMetadata[0].split("!")[0];
 					
 				//UNKNOWN message	
@@ -137,8 +137,8 @@ public class IncomingMessage implements IIncomingMessage {
 	 * @see messaging.IIncomingMessage#getTokenList()
 	 */
 	@Override
-	public TokenList getTokenList() {
-		if (tokenList == null) tokenList = new TokenList(originalString);
+	public String[] getTokenList() {
+		if (tokenList == null) tokenList = originalString.split(" ");
 		return tokenList;
 	}//*/
 

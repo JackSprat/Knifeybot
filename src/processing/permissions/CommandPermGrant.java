@@ -31,7 +31,7 @@ public class CommandPermGrant extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "permissions.grant"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":kperm grant <user> <permission>"; }
+	@Override public String getFormatTokens() 				{ return "kperm grant @user @permission"; }
 	@Override public String getHelpString() 				{ return "This command grants <permission> to <user> - see :khelp for permissions"; }
 	
 }

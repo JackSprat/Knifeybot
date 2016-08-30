@@ -30,7 +30,7 @@ public class CommandBotUptime extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "uptime.bot"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":kuptime"; }
+	@Override public String getFormatTokens() 				{ return "kuptime"; }
 	@Override public String getHelpString() 				{ return "This command shows Knifeybot's uptime"; }
 
 }

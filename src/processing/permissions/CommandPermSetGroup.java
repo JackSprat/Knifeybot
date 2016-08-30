@@ -42,7 +42,7 @@ public class CommandPermSetGroup extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "permissions.setgroup"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":kperm setgroup <user> <permgroup>"; }
+	@Override public String getFormatTokens() 				{ return "kperm setgroup @user @permgroup"; }
 	@Override public String getHelpString() 				{ return "This command grants <permgroup> to <user>"; }
 	
 }

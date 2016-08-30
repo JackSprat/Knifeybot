@@ -48,13 +48,13 @@ public class CommandDeaths extends CommandBase {
 		case 29:
 			extraMessage = "Carry on my wayward son *sings to himself for a few minutes*"; break;
 		case 46:
-			extraMessage = "AND 2, wishfRock"; break;
+			extraMessage = "AND 2, HotPokket"; break;
 		case 47:
 			extraMessage = "SoonerLater"; break;
 		case 50:
-			extraMessage = "She's still going? Damn."; break;
+			extraMessage = "Still going? Damn."; break;
 		case 65:
-			extraMessage = "DA BA DEE, DA BA DIE"; break;
+			extraMessage = "DA BA DEE, DA BA you died."; break;
 		case 69:
 			extraMessage = "pokketLEWD"; break;
 		case 88:
@@ -72,7 +72,7 @@ public class CommandDeaths extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "server.deaths"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":deaths"; }
+	@Override public String getFormatTokens() 				{ return "deaths"; }
 	@Override public String getHelpString() 				{ return "This command shows how many deaths there has been per game"; }
 
 }

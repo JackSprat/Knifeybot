@@ -43,7 +43,7 @@ public class CommandGame extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "game.view"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":game"; }
+	@Override public String getFormatTokens() 				{ return "game"; }
 	@Override public String getHelpString() 				{ return "This command shows what the current game and optionally gameinfo is"; }
 
 }

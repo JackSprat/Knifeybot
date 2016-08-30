@@ -30,9 +30,9 @@ public class CommandDeathsMinus extends CommandBase {
 		
 	}
 	
-	@Override public String getPermissionString() 			{ return "server.deathadd"; }
+	@Override public String getPermissionString() 			{ return "server.deathminus"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":death-"; }
+	@Override public String getFormatTokens() 				{ return "death-"; }
 	@Override public String getHelpString() 				{ return "This command adds a death"; }
 
 }

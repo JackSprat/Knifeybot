@@ -50,7 +50,7 @@ public class CommandQuoteView extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "quoter.viewquote"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":kquote <alias>"; }
+	@Override public String getFormatTokens() 				{ return "kquote @alias"; }
 	@Override public String getHelpString() 				{ return "This command views a quote with ID or alias <alias>, or a random quote if <alias> is \"random\""; }
 	
 }

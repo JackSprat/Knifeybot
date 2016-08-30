@@ -53,7 +53,7 @@ public class CommandQuoteRemove extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "quoter.removequote"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":kquote remove <ID>"; }
+	@Override public String getFormatTokens() 				{ return "kquote remove @ID"; }
 	@Override public String getHelpString() 				{ return "This command removes a quote with quote ID <ID>"; }
 	
 }

@@ -15,7 +15,7 @@ public class CommandSetServer extends CommandBase {
 		String game = ((ProcInfo)parent).getCurrentGame();
 
 		if (game != "") {
-			((ProcInfo)parent).setGameAttribute("server", getToken("..."));
+			((ProcInfo)parent).setGameAttribute("server", getToken("+"));
 			listOut.add(new OutgoingMessage(OutType.CHAT, "Server info set", parent.channel));
 		}
 		
@@ -25,7 +25,7 @@ public class CommandSetServer extends CommandBase {
 	
 	@Override public String getPermissionString() 			{ return "server.set"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatString() 				{ return ":server ..."; }
+	@Override public String getFormatTokens() 				{ return "server +"; }
 	@Override public String getHelpString() 				{ return "This command sets the current game's server"; }
 
 }

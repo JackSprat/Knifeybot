@@ -12,15 +12,6 @@ import processing.pokemon.moves.MoveType;
 import users.PermissionClass;
 
 public class CommandViewPokemon extends CommandBase {
-
-	@Override
-	public boolean isMatch() {
-		
-		String target = getToken("target");
-		if (!target.equalsIgnoreCase("pc") && !target.equalsIgnoreCase("party")) 	return false;
-																					return true;
-		
-	}
 	
 	@Override
 	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
@@ -29,7 +20,7 @@ public class CommandViewPokemon extends CommandBase {
 		long[] party = PokemonUser.getParty(getUser());
 		long[] pc = PokemonUser.getPC(getUser(), -1);
 		
-		String target = getToken("target");
+		String target = getToken("pc|party");
 		
 		int id = Integer.parseInt(getToken("index"));
 		long uuid = 0;
@@ -72,7 +63,7 @@ public class CommandViewPokemon extends CommandBase {
 
 	@Override public String getPermissionString() 			{ return "kpokemon.viewpokemon"; }
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
-	@Override public String getFormatString() 				{ return ":poke <target> <index>"; }
-	@Override public String getHelpString() 				{ return "This command views the user's party."; }
+	@Override public String getFormatTokens() 				{ return "poke pc|party #index"; }
+	@Override public String getHelpString() 				{ return "This command views the user's pokemon."; }
 	
 }
