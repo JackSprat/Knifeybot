@@ -32,9 +32,9 @@ public class CommandCommandView extends CommandBase {
 			
 			System.out.println(commandSplitStr[i]);
 			if (commandSplitStr[i].contains("%arg")) {
-				for (int argCounter = 1; argCounter < args.length; argCounter++) {
-					System.out.println(("Replacing %arg" + (argCounter)) + " with " + args[argCounter]);
-					commandSplitStr[i] = commandSplitStr[i].replace("%arg" + (argCounter), args[argCounter]);
+				for (int argCounter = 0; argCounter < args.length; argCounter++) {
+					System.out.println(("Replacing %arg" + (argCounter+1)) + " with " + args[argCounter]);
+					commandSplitStr[i] = commandSplitStr[i].replace("%arg" + (argCounter+1), args[argCounter]);
 				}
 				if (commandSplitStr[i].contains("%arg")) {
 					commandSplitStr[i] = "";

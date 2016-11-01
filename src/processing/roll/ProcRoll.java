@@ -11,6 +11,7 @@ public class ProcRoll extends ProcBase {
 		
 		super(listOut, channel);
 		commands.add(new CommandRoll());
+		commands.add(new CommandMath());
 	}
 
 }

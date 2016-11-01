@@ -72,7 +72,7 @@ public class ChannelTab extends Tab {
 		}
 		String listString = "";
 		for (IncomingMessage m : this.messages) {
-			listString += m.getUser() + ": " + m.getTokenList().toString() + "\n";
+			listString += m.getUser() + ": " + String.join(" ", m.getTokenList()) + "\n";
 		}
 		
 		final String finalListString = listString;
