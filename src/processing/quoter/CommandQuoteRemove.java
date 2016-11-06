@@ -2,7 +2,7 @@ package processing.quoter;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.ChannelManager;
+import channel.DataManager;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
@@ -39,7 +39,7 @@ public class CommandQuoteRemove extends CommandBase {
 		
 		if (q != null) {
 			
-			ChannelManager.removeQuote(parent.channel, (long) id);
+			DataManager.removeQuote(parent.channel, (long) id);
 			listOut.add(new OutgoingMessage(OutType.CHAT, "Quote " + id + " deleted", parent.channel));
 			return true;
 

@@ -2,7 +2,7 @@ package processing.command;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.ChannelManager;
+import channel.DataManager;
 import javafx.scene.Parent;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
@@ -30,7 +30,7 @@ public class ProcCommand extends ProcBase {
 		System.out.println(reply);
 		if (reply != "" && reply != null) return reply;
 		System.out.println(reply);
-		reply = ChannelManager.getCommand(channel, alias);
+		reply = DataManager.getCommand(channel, alias);
 		System.out.println(reply);
 		if (reply != "" && reply != null) return reply;
 		

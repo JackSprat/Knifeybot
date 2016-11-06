@@ -2,7 +2,7 @@ package processing.quoter;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.ChannelManager;
+import channel.DataManager;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
 
@@ -20,9 +20,9 @@ public class ProcQuoter extends ProcBase {
 
 		try {
 			int id = Integer.parseInt(alias);
-			return ChannelManager.getQuote(channel, (long)id);
+			return DataManager.getQuote(channel, (long)id);
 		} catch (NumberFormatException nfe) {
-			return ChannelManager.getQuote(channel, alias);
+			return DataManager.getQuote(channel, alias);
 		}
 		
 	}

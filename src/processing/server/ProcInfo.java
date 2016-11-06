@@ -7,7 +7,7 @@ import com.mb3364.twitch.api.handlers.ChannelResponseHandler;
 import com.mb3364.twitch.api.handlers.StreamResponseHandler;
 import com.mb3364.twitch.api.models.Channel;
 import com.mb3364.twitch.api.models.Stream;
-import channel.ChannelManager;
+import channel.DataManager;
 import logger.Logger;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
@@ -53,7 +53,7 @@ public class ProcInfo extends ProcBase {
 	public long getStreamStartTime() { return streamStartTime; }
 	
 	public String getGameAttribute(String attribute) {
-		return ChannelManager.getGameAttribute(channel, getCurrentGame(), attribute);
+		return DataManager.getGameAttribute(channel, getCurrentGame(), attribute);
 	}
 	
 	private void updateChannelInfo() {
@@ -96,7 +96,7 @@ public class ProcInfo extends ProcBase {
 	}
 
 	public void setGameAttribute(String attribute, String value) {
-		ChannelManager.setGameAttribute(channel, getCurrentGame(), attribute, value);
+		DataManager.setGameAttribute(channel, getCurrentGame(), attribute, value);
 	}
 
 }

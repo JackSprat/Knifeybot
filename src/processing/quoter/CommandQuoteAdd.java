@@ -2,7 +2,7 @@ package processing.quoter;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.ChannelManager;
+import channel.DataManager;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
@@ -13,7 +13,7 @@ public class CommandQuoteAdd extends CommandBase {
 	@Override
 	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
 		
-		ChannelManager.addQuote(parent.channel, getToken("alias"), getToken("user"), getToken("+"));
+		DataManager.addQuote(parent.channel, getToken("alias"), getToken("user"), getToken("+"));
 		return listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", quote added pokketGOOD", parent.channel));
 		
 	}

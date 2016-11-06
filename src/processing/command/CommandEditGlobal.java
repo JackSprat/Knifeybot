@@ -2,7 +2,7 @@ package processing.command;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.ChannelManager;
+import channel.DataManager;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
@@ -19,7 +19,7 @@ public class CommandEditGlobal extends CommandBase {
 	@Override
 	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
 		
-		ChannelManager.addCommand(parent.channel, getToken("@alias"), getToken("+"));
+		DataManager.addCommand(parent.channel, getToken("@alias"), getToken("+"));
 		return listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", global response \"" + getToken("@alias") + "\" edited", parent.channel));
 		
 	}

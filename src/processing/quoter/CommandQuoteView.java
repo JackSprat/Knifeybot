@@ -2,7 +2,7 @@ package processing.quoter;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.ChannelManager;
+import channel.DataManager;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
@@ -37,7 +37,7 @@ public class CommandQuoteView extends CommandBase {
 	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
 		
 		if (getToken("alias").equalsIgnoreCase("random")) {
-			String q = ChannelManager.getRandomQuote(parent.channel);
+			String q = DataManager.getRandomQuote(parent.channel);
 			listOut.add(new OutgoingMessage(OutType.CHAT, q, ((ProcQuoter)parent).channel));
 			return true;
 		}
