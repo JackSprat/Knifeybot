@@ -1,11 +1,9 @@
 package begin;
 
-import messaging.IMessagingManager;
+import messaging.IChannelHandler;
 import messaging.IncomingMessage;
-import messaging.MessagingManager;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
-import messaging.TestMessagingManager;
+import messaging.BaseChannelHandler;
+import messaging.ChannelManager;
 import state.ChannelState;
 
 import java.util.ArrayList;
@@ -15,18 +13,11 @@ import java.util.Map;
 import gui.ChannelTab;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import logger.Logger;
 
 public class defaultRunPokket extends Application {
 	
@@ -42,12 +33,8 @@ public class defaultRunPokket extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		for (String s : test) {
-			IMessagingManager m = new MessagingManager(s);
-			IMessagingManager.managers.add(m);
-			new Thread(m).start();
-		}
-		
+		ChannelManager manager = new ChannelManager(test);
+		new Thread(manager).start();
 		primaryStage.setTitle("Knifeybot");
 
 		
@@ -60,16 +47,18 @@ public class defaultRunPokket extends Application {
         
 		TabPane mainTabs = new TabPane();
 		
+		
 		Tab channeltab = new Tab();
 		channeltab.setText("Channels");
+		channeltab.setClosable(false);
 		mainTabs.getTabs().add(channeltab);
 		
 		Tab testtab = new Tab();
 		testtab.setText("0");
+		testtab.setClosable(false);
 		mainTabs.getTabs().add(testtab);
         
         channeltab.setContent(channels);
-        
         
         primaryStage.setScene(new Scene(mainTabs, 500, 400));
         primaryStage.show();
@@ -81,13 +70,14 @@ public class defaultRunPokket extends Application {
                 	try {
 	                    Thread.sleep(2000);
 	                } catch (Exception ex) {
-	                    
+	                    Logger.WARNING("Error waiting in UI thread\n" + ex.getMessage());
 	                }
                 	for (String s : test) {
+                		
                     	ArrayList<IncomingMessage> messages = ChannelState.retrieveMessages(s);
                     	
                     	if (messages != null && messages.size() >= 1) {
-                    		System.out.println("Updating for " + s);
+                    		Logger.DEBUG("Updating GUI messages for " + s);
                     		channelTabList.get(s).updateText(messages);
                     	}
                     }

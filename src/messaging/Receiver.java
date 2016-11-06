@@ -63,7 +63,7 @@ public class Receiver implements IReceiver {
 			
 			if (line != null) {
 				IncomingMessage m = new IncomingMessage(line);
-				if (m.getType() != InType.UNKNOWN) Logger.INFO(TextUtils.setLength("Rec: " + m.getType().toString(), 15) + " - " + m.getUser() + " - " + m.getTokenList().toString());
+				if (m.getType() != InType.UNKNOWN) Logger.INFO(TextUtils.setLength("Rec: " + m.getType().toString(), 15) + " - " + m.getUser() + " - " + String.join(" ", m.getTokenList()));
 				messageList.add(m);
 				
 			}

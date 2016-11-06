@@ -8,7 +8,7 @@ import org.simpleframework.xml.core.Persister;
 import logger.Logger;
 import utils.DirectoryUtils;
 
-public class ChannelManager {
+public class DataManager {
 	
 	public static synchronized String getGameAttribute(String channel, String game, String attribute) {
 		// TODO Auto-generated method stub

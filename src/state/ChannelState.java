@@ -15,6 +15,7 @@ public class ChannelState {
 	protected ArrayList<IncomingMessage> messagesIn = new ArrayList<IncomingMessage>();
 	protected boolean isLive = false;
 	protected int deaths = 0;
+	private long lastChannelMessage = 0;
 	
 	protected long lastStreamEnd = 0;
 
@@ -59,6 +60,12 @@ public class ChannelState {
 	
 	public static synchronized void newMessageNotify (String channelName, IncomingMessage message) {
 		channels.get(channelName).messagesIn.add(message);
+		channels.get(channelName).lastChannelMessage = System.currentTimeMillis();
+	}
+	
+	public static synchronized long getLastMessageTimeAgo (String channelName) {
+		long time = channels.get(channelName).lastChannelMessage;
+		return System.currentTimeMillis() - time;
 	}
 	
 	public static synchronized ArrayList<IncomingMessage> retrieveMessages (String channelName) {

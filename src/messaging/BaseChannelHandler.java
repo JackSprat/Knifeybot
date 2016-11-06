@@ -9,9 +9,9 @@ import processing.ProcManager;
 import state.ChannelState;
 import utils.Constants;
 
-public class MessagingManager implements IMessagingManager {
+public class BaseChannelHandler implements IChannelHandler {
 	
-	private String channel;
+	private final String channel;
 	private ProcManager p;
 	private ISender ircSender;
 	private IReceiver ircReceiver;
@@ -21,22 +21,29 @@ public class MessagingManager implements IMessagingManager {
 	private BlockingQueue<OutgoingMessage> messageToIRC = 	new LinkedBlockingQueue<OutgoingMessage>();
 	
 	private boolean continueRunning = true;
-	private long lastMessage = System.currentTimeMillis();
 	
-	public MessagingManager(String channel) {
+	public BaseChannelHandler(String channel) {
 		this.channel = channel;
 		ChannelState.registerChannel(channel);
 	}
 
 	@Override
 	public void run() {
+
+		Socket socket = null;
 		
-		Socket socket = getNewSocket();
+		try {
+
+	        socket = new Socket(Constants.server, Constants.port);
+		} catch (Exception e) {
+			Logger.STACK("Error creating socket", e);
+			return;
+		}
 		
-		Logger.DEBUG("Creating IRC and processor threads");
+		Logger.DEBUG("Creating IRC and processor threads for " + this.getChannel());
 		ircSender	= new Sender( socket, messageToIRC);
 		ircReceiver = new Receiver( socket, messageFromIRC);
-		p = new ProcManager( messageToProc, messageFromProc, this.channel);
+		p = new ProcManager( messageToProc, messageFromProc, this.getChannel());
 		
 		new Thread(ircSender).start();
 		new Thread(ircReceiver).start();
@@ -52,7 +59,6 @@ public class MessagingManager implements IMessagingManager {
 				
 				switch(messageIRCIn.getType()) {
 					case IRCPING: case IRCINFO: case IRCCHAT: case IRCJOIN: case IRCPART: case COMMAND: case POKEMON:
-						lastMessage = System.currentTimeMillis();
 						ChannelState.newMessageNotify(channel, messageIRCIn);
 						messageToProc.add(messageIRCIn); break;
 					default:
@@ -75,16 +81,6 @@ public class MessagingManager implements IMessagingManager {
 			}
 			
 			try { Thread.sleep(25); } catch (InterruptedException e) { Logger.STACK("", e); }
-
-			if (lastMessage + 7*60*1000 < System.currentTimeMillis()) {
-				
-				continueRunning = false;
-				
-			}
-			
-			if (!ircReceiver.continueRunning()) {
-				continueRunning = false;
-			}
 			
 		}
 		
@@ -92,29 +88,11 @@ public class MessagingManager implements IMessagingManager {
 		ircReceiver.endExecution();
 		p.endExecution();
 		
-		IMessagingManager m = new MessagingManager(this.channel);
-		IMessagingManager.managers.add(m);
-		new Thread(m).start();
-		
 	}
 	
 	@Override
 	public void newMessageToProc(IncomingMessage m) {
 		messageToProc.add(m);
-	}
-	
-	private Socket getNewSocket() {
-		
-		Socket socket = null;
-		
-		try {
-
-	        socket = new Socket(Constants.server, Constants.port);
-		} catch (Exception e) {
-			Logger.STACK("Error creating socket", e);
-		}
-		
-		return socket;
 	}
 
 	@Override
@@ -122,5 +100,8 @@ public class MessagingManager implements IMessagingManager {
 
 	@Override
 	public void newMessageToIRC(OutgoingMessage m) { messageToIRC.add(m); }
+
+	@Override
+	public void terminateExecution() { this.continueRunning = false; }
 	
 }
