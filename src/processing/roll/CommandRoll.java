@@ -3,17 +3,13 @@ package processing.roll;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandRoll extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String rollString = "";
 		String message = getToken("+");
@@ -71,9 +67,6 @@ public class CommandRoll extends CommandBase {
 		    	tokenSeenD = true;
 		    } else if (c.equals(' ')) {
 		    	continue;
-		    } else {
-		    	System.out.println(c.hashCode());
-		    	return false;
 		    }
 		    
 		}
@@ -100,8 +93,7 @@ public class CommandRoll extends CommandBase {
 		
 		rollString = getUser() + " rolled a " + sum + "! Rolls:" + rollString.substring(2);
 		if (rollString.length() > 150) rollString = rollString.substring(0, 150) + " ...";
-		listOut.add(new OutgoingMessage(OutType.CHAT, rollString, parent.channel));
-		return true;
+		sendReply(rollString);
 		
 	}
 

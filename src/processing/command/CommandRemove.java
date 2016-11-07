@@ -1,9 +1,5 @@
 package processing.command;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 import users.UserManager;
@@ -11,11 +7,10 @@ import users.UserManager;
 public class CommandRemove extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		UserManager.removeCommand(getUser(), getToken("@alias"));
-		listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", custom response \"" + getToken("@alias") + "\" deleted", parent.channel));
-		return true;
+		sendReply(getUser() + ", custom response \"" + getToken("@alias") + "\" deleted");
 		
 	}
 	

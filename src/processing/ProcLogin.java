@@ -6,9 +6,7 @@ import logger.Logger;
 import messaging.IIncomingMessage;
 import messaging.IncomingMessage.InType;
 import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import utils.ConfigLoader;
-import utils.Constants;
 
 public class ProcLogin extends ProcBase {
 
@@ -28,8 +26,8 @@ public class ProcLogin extends ProcBase {
 	public void parseMessage(IIncomingMessage in) {
 		
 		if (in.getType() == InType.IRCINFO && in.getID().equals("004")) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, "CAP REQ :twitch.tv/membership\r\n", channel));
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, "JOIN #" + this.channel + "\r\n", channel));
+			sendRaw("CAP REQ :twitch.tv/membership\r\n");
+			sendRaw("JOIN #" + this.channel + "\r\n");
 			loggedIn = true;
 			
 			Logger.INFO("Logged in correctly!");
@@ -37,7 +35,7 @@ public class ProcLogin extends ProcBase {
 		}
 		
 		if (in.getType() == InType.IRCPING) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", channel));
+			sendPong();
 		}
 		
 	}
@@ -48,17 +46,27 @@ public class ProcLogin extends ProcBase {
 		if (loggedIn) { return; }
 		
 		if (!sentPass) {
-			listOut.add(new OutgoingMessage(OutType.RAW, "PASS " + ConfigLoader.getOAuth() + "\r\n", channel));
+			sendRaw("PASS " + ConfigLoader.getOAuth() + "\r\n");
 			sentPass = true;
 			return;
 		}
 		
 		if (!sentNick) {
-			listOut.add(new OutgoingMessage(OutType.RAW, "NICK " + ConfigLoader.getNick() + "\r\n", channel));
+			sendRaw("NICK " + ConfigLoader.getNick() + "\r\n");
 			sentNick = true;
 			return;
 		}
 
+	}
+
+	
+	private void sendRaw(String message) {
+		System.out.println(message + ", " + this.channel);
+		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, this.channel));
+	}
+	
+	private void sendPong() {
+		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", this.channel));
 	}
 	
 }

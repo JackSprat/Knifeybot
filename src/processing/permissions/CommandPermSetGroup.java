@@ -1,9 +1,5 @@
 package processing.permissions;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 import users.UserManager;
@@ -11,10 +7,10 @@ import users.UserManager;
 public class CommandPermSetGroup extends CommandBase {
 	
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 		
 		if (PermissionClass.getPermissionClass(getToken("permgroup")) == null) {
-			listOut.add(new OutgoingMessage(OutType.CHAT, getToken("permgroup") + " is not a valid permission class.", parent.channel));
+			sendReply(getToken("permgroup") + " is not a valid permission class.");
 			return false;
 		}
 			
@@ -22,7 +18,7 @@ public class CommandPermSetGroup extends CommandBase {
 	}
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		int editorPermClass = UserManager.getPermLevel(parent.channel, getUser());
 		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("permgroup"));
@@ -31,13 +27,10 @@ public class CommandPermSetGroup extends CommandBase {
 		if (editorPermClass > permClass.ordinal() || getUser().equalsIgnoreCase("jacksprat47")) {
 			
 			UserManager.setPermLevel(parent.channel, getToken("user"), permClass.ordinal());
-			OutgoingMessage message = new OutgoingMessage(OutType.CHAT, getToken("user") + " now has group: " + getToken("permgroup"), parent.channel);
-			listOut.add(message);
-			return true;
+			sendReply(getToken("user") + " now has group: " + getToken("permgroup"));
 			
 		}
-		
-		return false;
+
 	}
 
 	@Override public String getPermissionString() 			{ return "permissions.setgroup"; }

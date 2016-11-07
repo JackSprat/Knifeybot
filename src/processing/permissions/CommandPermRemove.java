@@ -1,9 +1,5 @@
 package processing.permissions;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 import users.UserManager;
@@ -11,7 +7,7 @@ import users.UserManager;
 public class CommandPermRemove extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		int editorPermClass = UserManager.getPermLevel(parent.channel, getUser());
 		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("permission"));
@@ -19,13 +15,9 @@ public class CommandPermRemove extends CommandBase {
 		if (editorPermClass > permClass.ordinal()) {
 			
 			UserManager.addPermission(parent.channel, getToken("user"), getToken("permission"), false);
-			OutgoingMessage message = new OutgoingMessage(OutType.CHAT, getToken("user") + " removed permission: " + getToken("permission"), parent.channel);
-			listOut.add(message);
-			return true;
+			sendReply(getToken("user") + " removed permission: " + getToken("permission"));
 			
 		}
-		
-		return false;
 		
 	}
 

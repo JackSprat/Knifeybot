@@ -1,8 +1,6 @@
 package begin;
 
-import messaging.IChannelHandler;
 import messaging.IncomingMessage;
-import messaging.BaseChannelHandler;
 import messaging.ChannelManager;
 import state.ChannelState;
 
@@ -12,7 +10,6 @@ import java.util.Map;
 
 import gui.ChannelTab;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;

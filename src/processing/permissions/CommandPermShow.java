@@ -1,9 +1,5 @@
 package processing.permissions;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 import users.UserManager;
@@ -11,7 +7,7 @@ import users.UserManager;
 public class CommandPermShow extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		String user = getUser();
 		String specifiedUser = getToken("user");
 		
@@ -19,13 +15,9 @@ public class CommandPermShow extends CommandBase {
 		
 		for (PermissionClass p : PermissionClass.values()){
 			if (p.ordinal() == UserManager.getPermLevel(parent.channel, user)) {
-				OutgoingMessage message = new OutgoingMessage(OutType.CHAT, user + " has group: " + p.toString(), parent.channel);
-				listOut.add(message);
-				return true;
+				sendReply(user + " has group: " + p.toString());
 			}
 		}
-		
-		return false;
 
 	}
 

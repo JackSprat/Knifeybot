@@ -9,7 +9,5 @@ public interface IReceiver extends Runnable {
 	public abstract void run();
 
 	public abstract void endExecution();
-	
-	public abstract boolean continueRunning();
 
 }

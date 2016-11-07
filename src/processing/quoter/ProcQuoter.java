@@ -12,6 +12,7 @@ public class ProcQuoter extends ProcBase {
 		
 		super(listOut, channel);
 		commands.add(new CommandQuoteView());
+		commands.add(new CommandQuoteViewMulti());
 		commands.add(new CommandQuoteAdd());
 		commands.add(new CommandQuoteRemove());
 	}

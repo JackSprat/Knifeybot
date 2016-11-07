@@ -1,9 +1,5 @@
 package processing.server;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import state.ChannelState;
 import users.PermissionClass;
@@ -13,7 +9,7 @@ public class CommandDeathsPlus extends CommandBase {
 	
 	
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 			
 		if (!((ProcInfo)parent).getChannelLive()) return false;
 		if (((ProcInfo)parent).getCurrentGame() == "") return false;
@@ -21,12 +17,11 @@ public class CommandDeathsPlus extends CommandBase {
 	}
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String message = "riPepperonis " + parent.channel + ", pokketFeels 7";
 		ChannelState.addDeaths(parent.channel, 1);
-		listOut.add(new OutgoingMessage(OutType.CHAT, message, parent.channel));
-		return true;
+		sendReply(message);
 		
 	}
 	

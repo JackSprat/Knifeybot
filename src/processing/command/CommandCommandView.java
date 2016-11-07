@@ -1,17 +1,12 @@
 package processing.command;
 
-import java.util.concurrent.BlockingQueue;
-
-import logger.Logger;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandCommandView extends CommandBase {
 
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 		
 		String command = ((ProcCommand)parent).getCommand(getToken("@alias").substring(1), getUser());
 		
@@ -21,7 +16,7 @@ public class CommandCommandView extends CommandBase {
 	}
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String commandStr = ((ProcCommand)parent).getCommand(getToken("@alias").substring(1), getUser());
 		
@@ -46,7 +41,7 @@ public class CommandCommandView extends CommandBase {
 		
 		commandStr = commandStr.replaceAll("%me", getUser());
 		
-		return listOut.add(new OutgoingMessage(OutType.CHAT, commandStr.trim(), parent.channel));
+		sendReply(commandStr.trim());
 		
 	}
 

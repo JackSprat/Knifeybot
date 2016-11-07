@@ -1,26 +1,22 @@
 package processing.command;
 
-import java.util.concurrent.BlockingQueue;
-
 import channel.DataManager;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandEditGlobal extends CommandBase {
 
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 		if (((ProcCommand)parent).getCommand(getToken("@alias"), getUser()) == null)	return false;
 																									return true;
 	}
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		DataManager.addCommand(parent.channel, getToken("@alias"), getToken("+"));
-		return listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", global response \"" + getToken("@alias") + "\" edited", parent.channel));
+		sendReply(getUser() + ", global response \"" + getToken("@alias") + "\" edited");
 		
 	}
 

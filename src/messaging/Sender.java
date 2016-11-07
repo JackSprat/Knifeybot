@@ -48,7 +48,7 @@ public class Sender implements ISender {
 			OutgoingMessage message = listOut.poll();
 			
 			if (message != null) {
-				Logger.TRACE(TextUtils.setLength("Snd: " + message.type.toString(), 15) + " - " + message.toString());
+				Logger.INFO(TextUtils.setLength("Snd: " + message.type.toString(), 15) + " - " + message.toString());
 				String m = message.toString();
 				
 				

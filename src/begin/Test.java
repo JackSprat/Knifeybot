@@ -1,15 +1,12 @@
 package begin;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.util.Date;
-
 import users.UserManager;
 
 public class Test {
 	public static void main (String[] args) {
 		int counter = 0;
-		long starttime = new Date().getTime();
+		//long starttime = new Date().getTime();
 		File dir = new File("users");
 		 File[] directoryListing = dir.listFiles();
 		  if (directoryListing != null) {

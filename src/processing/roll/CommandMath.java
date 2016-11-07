@@ -3,19 +3,15 @@ package processing.roll;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.BlockingQueue;
-
 import org.mariuszgromada.math.mxparser.Expression;
 
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandMath extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String message = getToken("+");
 
@@ -24,8 +20,7 @@ public class CommandMath extends CommandBase {
 		
 		Expression e = new Expression(message);
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, "Result: " + e.getExpressionString() + " = " + e.calculate(), parent.channel));
-		return true;
+		sendReply("Result: " + e.getExpressionString() + " = " + e.calculate());
 		
 	}
 

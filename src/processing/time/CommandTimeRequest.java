@@ -14,7 +14,7 @@ public class CommandTimeRequest extends CommandBase {
 	}
 
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 
 		TimeZone from = ((ProcTimeConverter)parent).getTimezone(tokenList.getToken(2));
 		TimeZone to = ((ProcTimeConverter)parent).getTimezone(tokenList.getToken(4));		
@@ -29,7 +29,7 @@ public class CommandTimeRequest extends CommandBase {
 	}
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		TimeZone from = ((ProcTimeConverter)parent).getTimezone(tokenList.getToken(2));
 		TimeZone to = ((ProcTimeConverter)parent).getTimezone(tokenList.getToken(4));

@@ -1,19 +1,14 @@
 package processing.help;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandHelpView extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, "A list of Knifeybot commands can be found at http://www.js47.co.uk/knifeybot/help.html", ((ProcHelp)parent).channel));
-		return false;
+		sendReply("A list of Knifeybot commands can be found at http://www.js47.co.uk/knifeybot/help.html");
 		
 	}
 	

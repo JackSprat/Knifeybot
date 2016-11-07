@@ -14,7 +14,7 @@ public class CommandAddTwitter extends CommandBase {
 	}
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		boolean added = ((ProcTwitter)parent).addTwitter(tokenList.getToken(2));
 		

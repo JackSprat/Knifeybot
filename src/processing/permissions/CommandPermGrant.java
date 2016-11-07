@@ -1,9 +1,5 @@
 package processing.permissions;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 import users.UserManager;
@@ -11,7 +7,7 @@ import users.UserManager;
 public class CommandPermGrant extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		int editorPermClass = UserManager.getPermLevel(parent.channel, getUser());
 		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("permission"));
@@ -19,13 +15,9 @@ public class CommandPermGrant extends CommandBase {
 		if (editorPermClass > permClass.ordinal()) {
 			
 			UserManager.addPermission(parent.channel, getToken("user"), getToken("permission"), true);
-			OutgoingMessage message = new OutgoingMessage(OutType.CHAT, getToken("user") + " granted permission: " + getToken("permission"), parent.channel);
-			listOut.add(message);
-			return true;
+			sendReply(getToken("user") + " granted permission: " + getToken("permission"));
 			
 		}
-		
-		return false;
 		
 	}
 

@@ -1,16 +1,12 @@
 package processing.server;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandServer extends CommandBase {
 
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 			
 		if (!((ProcInfo)parent).getChannelLive()) return false;
 		if (((ProcInfo)parent).getCurrentGame() == "") return false;
@@ -18,7 +14,7 @@ public class CommandServer extends CommandBase {
 	}
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String game = ((ProcInfo)parent).getCurrentGame();
 		String message = "No server found for " + game;
@@ -26,8 +22,7 @@ public class CommandServer extends CommandBase {
 		String server = ((ProcInfo)parent).getGameAttribute("server");
 		if (server != "") message = ((ProcInfo)parent).channel + " is playing " + game + " on " + server;
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, message, parent.channel));
-		return true;
+		sendReply(message);
 		
 	}
 	

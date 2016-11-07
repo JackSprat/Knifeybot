@@ -1,20 +1,15 @@
 package processing.repeat;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandRepeat extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, getToken("+"), getToken("channel")));
+		sendReply(getToken("+"));
 
-		return true;
 	}
 
 	@Override public String getPermissionString() 			{ return "repeat.repeat"; }

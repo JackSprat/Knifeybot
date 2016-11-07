@@ -1,9 +1,5 @@
 package processing.pokemon;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import processing.pokemon.creation.PokemonObject;
 import processing.pokemon.creation.PokemonUser;
@@ -12,14 +8,11 @@ import users.PermissionClass;
 public class CommandStarter extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String idToken = this.getToken("id");
 		
-		if (PokemonUser.hasUsedStarter(getUser())) {
-			listOut.add(new OutgoingMessage(OutType.CHAT, "You have already selected a starter pokemon!", parent.channel));
-			return false;
-		}
+		if (PokemonUser.hasUsedStarter(getUser())) { sendReply("You have already selected a starter pokemon!"); }
 		
 		int pokeID = 0;
 		
@@ -38,11 +31,9 @@ public class CommandStarter extends CommandBase {
 			PokemonObject po = PokemonObject.generatePokemon(1, pokeID);
 			PokemonUser.setUsedStarter(getUser());
 			PokemonUser.addPokemon(getUser(), po.getID());
-			listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", you have selected " + po.toString() + " as your starter pokemon!", parent.channel));
-			return true;
+			sendReply(getUser() + ", you have selected " + po.toString() + " as your starter pokemon!");
 		} else {
-			listOut.add(new OutgoingMessage(OutType.CHAT, idToken + " is not a valid starter pokemon!", parent.channel));
-			return false;
+			sendReply(idToken + " is not a valid starter pokemon!");
 		}
 
 		

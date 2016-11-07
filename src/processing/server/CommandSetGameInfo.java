@@ -1,25 +1,19 @@
 package processing.server;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandSetGameInfo extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String game = ((ProcInfo)parent).getCurrentGame();
 
 		if (game != "") {
 			((ProcInfo)parent).setGameAttribute("gameinfo", getToken("+"));
-			listOut.add(new OutgoingMessage(OutType.CHAT, "Server gameinfo set", parent.channel));
+			sendReply("Server gameinfo set");
 		}
-		
-		return true;
 		
 	}
 	

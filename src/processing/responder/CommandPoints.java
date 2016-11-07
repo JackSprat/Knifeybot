@@ -1,16 +1,12 @@
 package processing.responder;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandPoints extends CommandBase {
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		String user = getUser();
 		String specifiedUser = getToken("user");
 		
@@ -20,8 +16,7 @@ public class CommandPoints extends CommandBase {
 		
 		String message = user + " has " + points + " points. ";
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, message, parent.channel));
-		return true;
+		sendReply(message);
 		
 	}
 	

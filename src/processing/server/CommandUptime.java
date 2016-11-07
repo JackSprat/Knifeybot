@@ -1,19 +1,15 @@
 package processing.server;
 
-import java.util.concurrent.BlockingQueue;
-
 import logger.Logger;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandUptime extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 
-		if (!((ProcInfo)parent).getChannelLive()) return false;
+		if (!((ProcInfo)parent).getChannelLive()) return;
 		
 		long timeDiffSecs = (System.currentTimeMillis() - ((ProcInfo)parent).getStreamStartTime())/1000;
 
@@ -27,8 +23,7 @@ public class CommandUptime extends CommandBase {
 						(secs < 9 ? "0" + secs : "" + secs);
 		
 		String message = "Stream Uptime: " + uptime;
-		listOut.add(new OutgoingMessage(OutType.CHAT, message, parent.channel));
-		return true;
+		sendReply(message);
 		
 	}
 	

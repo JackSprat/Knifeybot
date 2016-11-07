@@ -3,6 +3,7 @@ package processing;
 import java.util.concurrent.BlockingQueue;
 
 import messaging.IIncomingMessage;
+import messaging.IncomingMessage.InType;
 import messaging.OutgoingMessage;
 import users.PermissionClass;
 import users.UserManager;
@@ -10,24 +11,47 @@ import users.UserManager;
 public abstract class CommandBase {
 	
 	private IIncomingMessage in;
+	private BlockingQueue<OutgoingMessage> listOut;
 	protected ProcBase parent;
 	
 	public abstract String 			getPermissionString();
 	public abstract PermissionClass getPermissionClass();
 	public abstract String			getFormatTokens();
 	public abstract String			getHelpString();
-
-	public void setParent(ProcBase parent) {
-		this.parent = parent;
-	}
-	protected boolean isMatch() { return true; }
-	protected boolean isValid(BlockingQueue<OutgoingMessage> listOut) {	return true; }
-	public abstract boolean execute(BlockingQueue<OutgoingMessage> listOut);
 	
+
+	public void setParent(ProcBase parent, BlockingQueue<OutgoingMessage> listOut) {
+		this.parent = parent;
+		this.listOut = listOut;
+	}
+	public InType[] getValidInputs() { return new InType[]{InType.COMMAND, InType.IRCCHAT}; }
+	protected boolean isMatch() { return true; }
+	protected boolean isValid() {	return true; }
+	public abstract void execute();
+	
+	protected void sendReply(String message) {
+		if (in.getType().equals(InType.IRCCHAT) ||
+				in.getType().equals(InType.IRCINFO) ||
+				in.getType().equals(InType.IRCJOIN) ||
+				in.getType().equals(InType.IRCPART) ||
+				in.getType().equals(InType.POKEMON)) {
+			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.CHAT, message, parent.channel));
+		}
+	}
+	
+	protected void sendRaw(String message) {
+		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, parent.channel));
+	}
+	
+	protected void sendPong() {
+		if (in.getType().equals(InType.IRCPING)) {
+			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", parent.channel));
+		}
+	}
 	
 	
 	//Validation process for chat message
-	public boolean validate(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean validate() {
 		
 		String[] formatTokens = this.getFormatTokens().split(" ");
 		String[] messageTokens = in.getTokenList().clone();
@@ -74,15 +98,21 @@ public abstract class CommandBase {
 
 			if (!found) return false;
 		}
+				
 		
-		System.out.println(this.toString());
-		
-		if (!isMatch()) 																	return false;	//if match info is invalid (custom)
+		if (!isMatch()) 													return false;	//if match info is invalid (custom)
 		if (!UserManager.hasPermission(parent.channel, in.getUser(), 
-				getPermissionString(), getPermissionClass().ordinal()))						return false;	//if user has no permissions
-		if (!isValid(listOut))																return false;	//if command has invalid parameters (custom)
+				getPermissionString(), getPermissionClass().ordinal()))		return false;	//if user has no permissions
+		if (!isValid())														return false;	//if command has invalid parameters (custom)
 		
-		return true;
+		boolean validInputType = false;
+		for (InType type : this.getValidInputs()) {
+			if (type.equals(in.getType())) {
+				validInputType = true;
+			}
+		}
+		
+		return validInputType;
 		
 	}
 	

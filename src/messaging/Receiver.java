@@ -80,10 +80,5 @@ public class Receiver implements IReceiver {
 		
 	}
 
-	@Override
-	public boolean continueRunning() {
-		// TODO Auto-generated method stub
-		return continueRunning;
-	}
 	
 }

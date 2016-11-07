@@ -14,15 +14,12 @@ import messaging.IIncomingMessage;
 import messaging.IncomingMessage;
 import messaging.OutgoingMessage;
 import processing.command.ProcCommand;
-import processing.help.ProcHelp;
 import processing.permissions.ProcPermissions;
 import processing.pokemon.ProcPokemon;
 import processing.quoter.ProcQuoter;
-import processing.repeat.ProcRepeat;
 import processing.responder.ProcResponder;
 import processing.roll.ProcRoll;
 import processing.server.ProcInfo;
-import processing.twitter.ProcTwitter;
 import processing.uptime.ProcUptime;
 
 public class ProcManager extends Thread implements Runnable {
@@ -53,7 +50,7 @@ public class ProcManager extends Thread implements Runnable {
 		for (ProcBase processor : processors) {
 			for (CommandBase command : processor.getCommands()) {
 
-				command.setParent(processor);
+				command.setParent(processor, listOut);
 			}
 			for (EventBase event : processor.getEvents()) {
 				event.setParent(processor);
@@ -61,7 +58,6 @@ public class ProcManager extends Thread implements Runnable {
 		}
 		
 		this.listIn = listIn;
-		this.listOut = listOut;
 		
 		Logger.INFO("Finished initialisation");
 		

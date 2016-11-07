@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import messaging.OutgoingMessage.OutType;
 import state.ChannelState;
 
 public class ChannelManager implements Runnable {
@@ -47,7 +46,7 @@ public class ChannelManager implements Runnable {
 						new Thread(h).start();
 					}
 				} catch (NullPointerException npe) {
-					logger.Logger.WARNING("Channel not initialised properly");
+					logger.Logger.STACK("Channel not initialised properly", npe);
 				}
 				
 			}

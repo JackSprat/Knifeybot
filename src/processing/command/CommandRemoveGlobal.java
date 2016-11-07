@@ -1,21 +1,16 @@
 package processing.command;
 
-import java.util.concurrent.BlockingQueue;
-
 import channel.DataManager;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandRemoveGlobal extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		DataManager.removeCommand(parent.channel, getToken("@alias"));
-		listOut.add(new OutgoingMessage(OutType.CHAT, getUser() + ", global response \"" + getToken("@alias") + "\" deleted", parent.channel));
-		return true;
+		sendReply(getUser() + ", global response \"" + getToken("@alias") + "\" deleted");
 		
 	}
 	

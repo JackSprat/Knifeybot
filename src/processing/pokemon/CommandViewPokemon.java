@@ -1,9 +1,5 @@
 package processing.pokemon;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import processing.pokemon.creation.PokemonObject;
 import processing.pokemon.creation.PokemonUser;
@@ -14,7 +10,7 @@ import users.PermissionClass;
 public class CommandViewPokemon extends CommandBase {
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		
 		long[] party = PokemonUser.getParty(getUser());
@@ -28,7 +24,7 @@ public class CommandViewPokemon extends CommandBase {
 		if (party.length > id) {
 			uuid = party[id];
 		} else {
-			return false;
+			return;
 		}
 		
 		PokemonObject po = PokemonObject.getPokemon(uuid);
@@ -56,7 +52,7 @@ public class CommandViewPokemon extends CommandBase {
 			}
 		}
 		
-		return listOut.add(new OutgoingMessage(OutType.CHAT, message, parent.channel));
+		sendReply(message);
 
 		
 	}

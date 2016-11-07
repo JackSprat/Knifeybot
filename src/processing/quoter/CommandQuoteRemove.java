@@ -11,12 +11,12 @@ import users.PermissionClass;
 public class CommandQuoteRemove extends CommandBase {
 	
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 			
 		String q1 = ((ProcQuoter)parent).getQuote(getToken("ID"));
 		
 		if (q1 == null || q1 == "") {
-			listOut.add(new OutgoingMessage(OutType.CHAT, "Can't find quote pokketFeels", parent.channel));
+			sendReply("Can't find quote pokketFeels");
 			return false;
 		}
 		
@@ -25,14 +25,13 @@ public class CommandQuoteRemove extends CommandBase {
 	}
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
-		int id;
+		int id = 0;
 		try {
 			id = Integer.parseInt(getToken("ID"));
 		} catch (@SuppressWarnings("unused") NumberFormatException nfe) {
-			listOut.add(new OutgoingMessage(OutType.CHAT, getToken("ID") + " is not a valid quote ID", parent.channel));
-			return false;
+			sendReply(getToken("ID") + " is not a valid quote ID");
 		}
 		
 		String q = ((ProcQuoter)parent).getQuote(getToken("ID"));
@@ -40,14 +39,11 @@ public class CommandQuoteRemove extends CommandBase {
 		if (q != null) {
 			
 			DataManager.removeQuote(parent.channel, (long) id);
-			listOut.add(new OutgoingMessage(OutType.CHAT, "Quote " + id + " deleted", parent.channel));
-			return true;
+			sendReply("Quote " + id + " deleted");
 
 		}
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, getToken("ID") + " is not a valid quote ID", parent.channel));
-		
-		return false;
+		sendReply(getToken("ID") + " is not a valid quote ID");
 
 	}
 

@@ -1,16 +1,12 @@
 package processing.uptime;
 
-import java.util.concurrent.BlockingQueue;
-
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandBotUptime extends CommandBase {
 
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		long timeDiff = System.currentTimeMillis() - ((ProcUptime)parent).startTime;
 		timeDiff /= 1000;
@@ -23,8 +19,7 @@ public class CommandBotUptime extends CommandBase {
 						(hours < 9 ? "0" + hours : "" + hours) + ":" + 
 						(mins < 9 ? "0" + mins : "" + mins) + ":" + 
 						(secs < 9 ? "0" + secs : "" + secs);
-		listOut.add(new OutgoingMessage(OutType.CHAT, uptime, parent.channel));
-		return true;
+		sendReply(uptime);
 		
 	}
 	

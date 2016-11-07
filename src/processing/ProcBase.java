@@ -33,8 +33,8 @@ public abstract class ProcBase {
 			
 			try {
 				command.setMessage(in);
-				if (!command.validate(listOut)) continue;
-				command.execute(listOut);
+				if (!command.validate()) continue;
+				command.execute();
 				continue;
 			} catch (Exception ex) {
 				ex.printStackTrace();

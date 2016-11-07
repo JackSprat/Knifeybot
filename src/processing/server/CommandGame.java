@@ -1,18 +1,14 @@
 package processing.server;
 
 import java.io.UnsupportedEncodingException;
-import java.util.concurrent.BlockingQueue;
-
 import logger.Logger;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 
 public class CommandGame extends CommandBase {
 
 	@Override
-	public boolean isValid(BlockingQueue<OutgoingMessage> listOut) {
+	public boolean isValid() {
 			
 		if (!((ProcInfo)parent).getChannelLive()) return false;
 		if (((ProcInfo)parent).getCurrentGame() == "") return false;
@@ -20,7 +16,7 @@ public class CommandGame extends CommandBase {
 	}
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		String game = ((ProcInfo)parent).getCurrentGame();
 		
@@ -36,8 +32,7 @@ public class CommandGame extends CommandBase {
 		}
 		String message = ((ProcInfo)parent).channel + " is playing " + outputString + ". " + gameInfo;
 		
-		listOut.add(new OutgoingMessage(OutType.CHAT, message, ((ProcInfo)parent).channel));
-		return true;
+		sendReply(message);
 		
 	}
 	

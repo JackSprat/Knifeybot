@@ -14,7 +14,7 @@ public class CommandRemoveTwitter extends CommandBase {
 	}
 	
 	@Override
-	public boolean execute(BlockingQueue<OutgoingMessage> listOut) {
+	public void execute() {
 		
 		boolean removed = ((ProcTwitter)parent).removeTwitter(tokenList.getToken(2));
 		
