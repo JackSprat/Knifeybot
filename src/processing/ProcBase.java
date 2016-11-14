@@ -35,7 +35,7 @@ public abstract class ProcBase {
 				command.setMessage(in);
 				if (!command.validate()) continue;
 				command.execute();
-				continue;
+				break;
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}

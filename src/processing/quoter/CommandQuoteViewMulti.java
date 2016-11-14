@@ -16,7 +16,7 @@ public class CommandQuoteViewMulti extends CommandBase {
 		System.out.println(page + " " + count);
 		for (int i = page * count; i < (page + 1) * count; i++) {
 			String q1 = ((ProcQuoter)parent).getQuote(i + "");
-			message += q1 + "/n";
+			message += q1 + "\n";
 			System.out.println(q1);
 		}
 

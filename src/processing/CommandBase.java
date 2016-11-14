@@ -35,17 +35,19 @@ public abstract class CommandBase {
 				in.getType().equals(InType.IRCJOIN) ||
 				in.getType().equals(InType.IRCPART) ||
 				in.getType().equals(InType.POKEMON)) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.CHAT, message, parent.channel));
+			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.CHAT, message, parent.channel, ""));
+		} else if (in.getType().equals(InType.COMMAND)) {
+			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.COMMAND, message, parent.channel, in.getID()));
 		}
 	}
 	
 	protected void sendRaw(String message) {
-		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, parent.channel));
+		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, parent.channel, ""));
 	}
 	
 	protected void sendPong() {
 		if (in.getType().equals(InType.IRCPING)) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", parent.channel));
+			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", parent.channel, ""));
 		}
 	}
 	
@@ -63,8 +65,7 @@ public abstract class CommandBase {
 		for (int i = 0; i < formatTokens.length; i++) {
 			
 			String formatToken = formatTokens[i];
-			
-			System.out.println("Checking for token: " + formatToken);
+
 			//0 or more tokens remaining
 			if (formatToken.equals("*")) break;
 			//1 or more tokens remaining

@@ -1,6 +1,8 @@
 package channel;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -171,7 +173,7 @@ public class DataManager {
 	}
 	
 	private static synchronized File getFile(String channel) {
-		DirectoryUtils.createDirectories("users");
+		DirectoryUtils.createDirectories("channels");
 		
 		String filename = "channels/" + channel.toLowerCase() + ".xml";
 		return new File(filename);
@@ -181,6 +183,5 @@ public class DataManager {
 		File channelfile = getFile(channel);
 		if (channelfile.exists()) channelfile.delete();
 	}
-
 	
 }

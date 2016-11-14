@@ -61,12 +61,11 @@ public class ProcLogin extends ProcBase {
 
 	
 	private void sendRaw(String message) {
-		System.out.println(message + ", " + this.channel);
-		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, this.channel));
+		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, this.channel, ""));
 	}
 	
 	private void sendPong() {
-		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", this.channel));
+		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", this.channel, ""));
 	}
 	
 }

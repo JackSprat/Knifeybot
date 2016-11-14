@@ -15,10 +15,6 @@ public class BaseChannelHandler implements IChannelHandler {
 	private ProcManager p;
 	private ISender ircSender;
 	private IReceiver ircReceiver;
-	private BlockingQueue<IncomingMessage> messageFromIRC = 	new LinkedBlockingQueue<IncomingMessage>();
-	private BlockingQueue<IncomingMessage> messageToProc = 	new LinkedBlockingQueue<IncomingMessage>();
-	private BlockingQueue<OutgoingMessage> messageFromProc = new LinkedBlockingQueue<OutgoingMessage>();
-	private BlockingQueue<OutgoingMessage> messageToIRC = 	new LinkedBlockingQueue<OutgoingMessage>();
 	
 	private boolean continueRunning = true;
 	
@@ -30,10 +26,15 @@ public class BaseChannelHandler implements IChannelHandler {
 	@Override
 	public void run() {
 
+		BlockingQueue<OutgoingMessage> messageToWeb = ChannelState.getMessageToWeb(channel);
+		BlockingQueue<OutgoingMessage> messageToIRC = ChannelState.getMessageToIRC(channel);
+		BlockingQueue<IncomingMessage> messageToProc = ChannelState.getMessageToProc(channel);
+		BlockingQueue<IncomingMessage> messageFromIRC = ChannelState.getMessageFromIRC(channel);
+		BlockingQueue<OutgoingMessage> messageFromProc = ChannelState.getMessageFromProc(channel);
+		
 		Socket socket = null;
 		
 		try {
-
 	        socket = new Socket(Constants.server, Constants.port);
 		} catch (Exception e) {
 			Logger.STACK("Error creating socket", e);
@@ -44,6 +45,7 @@ public class BaseChannelHandler implements IChannelHandler {
 		ircSender	= new Sender( socket, messageToIRC);
 		ircReceiver = new Receiver( socket, messageFromIRC);
 		p = new ProcManager( messageToProc, messageFromProc, this.getChannel());
+		
 		
 		new Thread(ircSender).start();
 		new Thread(ircReceiver).start();
@@ -73,14 +75,18 @@ public class BaseChannelHandler implements IChannelHandler {
 				
 				switch(messageProcOut.type) {
 					case CHAT: case PONG: case RAW:
+						System.out.println("Add messageCHAT");
 						messageToIRC.add(messageProcOut); break;
+					case COMMAND:
+						System.out.println("Add messageWEB");
+						messageToWeb.add(messageProcOut); break;
 					default:
 						break;
 				}
 				
 			}
 			
-			try { Thread.sleep(25); } catch (InterruptedException e) { Logger.STACK("", e); }
+			try { Thread.sleep(20); } catch (InterruptedException e) { Logger.STACK("", e); }
 			
 		}
 		
@@ -89,17 +95,9 @@ public class BaseChannelHandler implements IChannelHandler {
 		p.endExecution();
 		
 	}
-	
-	@Override
-	public void newMessageToProc(IncomingMessage m) {
-		messageToProc.add(m);
-	}
 
 	@Override
 	public String getChannel() { return channel; }
-
-	@Override
-	public void newMessageToIRC(OutgoingMessage m) { messageToIRC.add(m); }
 
 	@Override
 	public void terminateExecution() { this.continueRunning = false; }

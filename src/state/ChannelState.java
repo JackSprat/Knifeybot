@@ -3,9 +3,13 @@ package state;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import logger.Logger;
 import messaging.IncomingMessage;
+import messaging.OutgoingMessage;
 
 public class ChannelState {
 
@@ -18,7 +22,13 @@ public class ChannelState {
 	private long lastChannelMessage = 0;
 	
 	protected long lastStreamEnd = 0;
-
+	
+	private BlockingQueue<IncomingMessage> messageFromIRC = 	new LinkedBlockingQueue<IncomingMessage>();
+	private BlockingQueue<IncomingMessage> messageToProc = 		new LinkedBlockingQueue<IncomingMessage>();
+	private BlockingQueue<OutgoingMessage> messageFromProc = 	new LinkedBlockingQueue<OutgoingMessage>();
+	private BlockingQueue<OutgoingMessage> messageToIRC = 		new LinkedBlockingQueue<OutgoingMessage>();
+	private BlockingQueue<OutgoingMessage> messageToWeb = 		new LinkedBlockingQueue<OutgoingMessage>();
+	
 	private ChannelState() {
 		
 	}
@@ -83,4 +93,14 @@ public class ChannelState {
 		return channels.get(channelName).deaths;
 	}
 	
+	public static synchronized Set<String> getChannelList() {
+		return channels.keySet();
+	}
+	
+	public static synchronized BlockingQueue<OutgoingMessage> getMessageFromProc(String channelName) { return channels.get(channelName).messageFromProc; }
+	public static synchronized BlockingQueue<OutgoingMessage> getMessageToIRC(String channelName) { return channels.get(channelName).messageToIRC; }
+	public static synchronized BlockingQueue<IncomingMessage> getMessageToProc(String channelName) { 	return channels.get(channelName).messageToProc; }
+	public static synchronized BlockingQueue<IncomingMessage> getMessageFromIRC(String channelName) { 	return channels.get(channelName).messageFromIRC; }
+	public static synchronized BlockingQueue<OutgoingMessage> getMessageToWeb(String channelName) { return channels.get(channelName).messageToWeb; }
+
 }

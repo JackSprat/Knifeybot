@@ -35,6 +35,7 @@ public class CommandQuoteView extends CommandBase {
 		
 		if (getToken("alias").equalsIgnoreCase("random")) {
 			sendReply(DataManager.getRandomQuote(parent.channel));
+			return;
 		}
 
 		sendReply(((ProcQuoter)parent).getQuote(getToken("alias")));

@@ -27,33 +27,5 @@ public class ProcQuoter extends ProcBase {
 		}
 		
 	}
-	
-	public void updateList() {
-		/*
-		List<Quote> quotes = getQuotes();
-		List<Quote> quoteList = new ArrayList<Quote>(quotes);
-		try {
-
-			byte[] encoded = Files.readAllBytes(Paths.get("default.html"));
-			String htmlString = new String(encoded, "UTF-8");
-			
-			String title = "New Page";
-			String body = "";
-			for (Quote q : quoteList) {
-				body += "<p>" + q.toString() + "</p>";
-			}
-			
-			htmlString = htmlString.replace("$title", title);
-			htmlString = htmlString.replace("$body", body);
-			FileWriter writer = new FileWriter("\\\\HTPC\\System\\WAMP\\wamp\\www\\knifeybot\\" + channel + "\\quotes.html", false);
-			writer.write(htmlString);
-			writer.close();
-
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-	}
 
 }

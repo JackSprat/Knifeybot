@@ -22,6 +22,7 @@ import messaging.ChannelManager;
 import messaging.IncomingMessage;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;
+import state.ChannelState;
 
 public class ChannelTab extends Tab {
 
@@ -47,8 +48,8 @@ public class ChannelTab extends Tab {
         	@Override
             public void handle(ActionEvent event) {
             	String text = messageInput.getText();
-            	OutgoingMessage messageOut = new OutgoingMessage(OutType.CHAT, text, channel);
-            	ChannelManager.newMessageToIRC(messageOut);
+            	OutgoingMessage messageOut = new OutgoingMessage(OutType.CHAT, text, channel, "");
+            	ChannelState.getMessageToIRC(channel).offer(messageOut);
 
             	messageInput.clear();
         	}

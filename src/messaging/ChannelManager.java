@@ -27,6 +27,8 @@ public class ChannelManager implements Runnable {
 			new Thread(h).start();
 		}
 		
+		WebReceiver webRec = new WebReceiver();
+		new Thread(webRec).start();
 		
 		while (true) {
 			try {
@@ -50,10 +52,9 @@ public class ChannelManager implements Runnable {
 				}
 				
 			}
+			
 		}
 		
 	}
-
-	public static void newMessageToIRC(OutgoingMessage messageOut) { handlers.get(messageOut.target).newMessageToIRC(messageOut); }
 
 }

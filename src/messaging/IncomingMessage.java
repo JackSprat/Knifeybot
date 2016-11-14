@@ -1,6 +1,7 @@
 package messaging;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class IncomingMessage implements IIncomingMessage {
 
@@ -21,6 +22,7 @@ public class IncomingMessage implements IIncomingMessage {
 	private String user = "NOSTRING";
 	private Date date;
 	private String[] tokenList;
+	private String channel = "NOSTRING";
 	
 	public IncomingMessage(String message) {
 		
@@ -97,49 +99,37 @@ public class IncomingMessage implements IIncomingMessage {
 				}
 				
 			}
+		} else if (originalString.startsWith("WEB")) {
+			this.type = InType.COMMAND;
+			System.out.println(originalString);
+			String[] splitLines = originalString.split("\n");
+			this.tokenList = splitLines[3].split(" ");
+			this.user = splitLines[2];
+			this.channel = splitLines[1];
+			this.ID = UUID.randomUUID().toString();
 		}
 
 	}
-	
-	/* (non-Javadoc)
-	 * @see messaging.IIncomingMessage#getType()
-	 */
+
 	@Override
-	public InType getType() {
-		return type;
-	}
-	
-	/* (non-Javadoc)
-	 * @see messaging.IIncomingMessage#getUser()
-	 */
+	public InType getType() { return type; }
+
 	@Override
-	public String getUser() {
-		return user;
-	}	
-	
-	/* (non-Javadoc)
-	 * @see messaging.IIncomingMessage#getID()
-	 */
+	public String getUser() { return user; }	
+
 	@Override
-	public String getID() {
-		return ID;
-	}
+	public String getChannel() {	return channel; }
 	
-	/* (non-Javadoc)
-	 * @see messaging.IIncomingMessage#getDate()
-	 */
 	@Override
-	public Date getDate() {
-		return this.date;
-	}
+	public String getID() {	return ID; }
 	
-	/* (non-Javadoc)
-	 * @see messaging.IIncomingMessage#getTokenList()
-	 */
+	@Override
+	public Date getDate() {	return this.date; }
+
 	@Override
 	public String[] getTokenList() {
 		if (tokenList == null) tokenList = originalString.split(" ");
 		return tokenList;
-	}//*/
+	}
 
 }

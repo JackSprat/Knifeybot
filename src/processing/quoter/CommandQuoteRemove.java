@@ -1,10 +1,6 @@
 package processing.quoter;
 
-import java.util.concurrent.BlockingQueue;
-
 import channel.DataManager;
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
 import processing.CommandBase;
 import users.PermissionClass;
 

@@ -16,4 +16,6 @@ public interface IIncomingMessage {
 
 	public abstract String[] getTokenList();
 
+	public abstract String getChannel();
+
 }

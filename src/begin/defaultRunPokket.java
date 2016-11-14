@@ -33,7 +33,6 @@ public class defaultRunPokket extends Application {
 		ChannelManager manager = new ChannelManager(test);
 		new Thread(manager).start();
 		primaryStage.setTitle("Knifeybot");
-
 		
 		TabPane channels = new TabPane();
 		
