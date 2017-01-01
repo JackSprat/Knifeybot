@@ -6,7 +6,6 @@ import data.DataManager;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
 import state.ChannelState;
-import users.UserManager;
 
 public class ProcCommand extends ProcBase {
 	
@@ -14,14 +13,14 @@ public class ProcCommand extends ProcBase {
 		
 		super(listOut, channel);
 		
-		commands.add(new CommandAddGlobal());
-		commands.add(new CommandRemoveGlobal());
-		commands.add(new CommandEditGlobal());
-		commands.add(new CommandCommandView());
+		commands.add(new CommandAdd());
+		commands.add(new CommandRemove());
+		commands.add(new CommandUpdateCounter());
+		commands.add(new CommandView());
 		
 	}
 	
-	public String getCommand(String alias, String user) {
+	public String getCommand(String alias) {
 		
 		String game = ChannelState.getCurrentGame(this.channel);
 		
@@ -31,6 +30,18 @@ public class ProcCommand extends ProcBase {
 		
 		return null;
 		
+	}
+
+	public int getCounter(String alias) {
+		String game = ChannelState.getCurrentGame(this.channel);
+		
+		int counter = DataManager.getCounter(this.channel, alias, game);
+		
+		return counter;
+	}
+	
+	public void setCounter(String alias, int value) {
+		DataManager.setCounter(this.channel, alias, value);
 	}
 
 }

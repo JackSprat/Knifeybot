@@ -2,6 +2,7 @@ package processing.server;
 
 import logger.Logger;
 import processing.CommandBase;
+import state.ChannelState;
 import users.PermissionClass;
 
 public class CommandUptime extends CommandBase {
@@ -9,18 +10,17 @@ public class CommandUptime extends CommandBase {
 	@Override
 	public void execute() {
 
-		if (!((ProcInfo)parent).getChannelLive()) return;
+		if (ChannelState.isStreamLive(parent.channel)) return;
 		
-		long timeDiffSecs = (System.currentTimeMillis() - ((ProcInfo)parent).getStreamStartTime())/1000;
+		int timeDiffMins = ChannelState.getUptimeMinutes(parent.channel);
 
-		Logger.DEBUG("Stream time live in s: " + timeDiffSecs);
-		int secs = (int) (timeDiffSecs % 60);
-		int mins = (int) ((timeDiffSecs / 60) % 60);
-		int hours = (int) ((timeDiffSecs / 3600) % 24);
+		Logger.DEBUG("Stream time live in m: " + timeDiffMins);
+
+		int mins = (int) (timeDiffMins);
+		int hours = (int) (timeDiffMins / 60);
 		String uptime = "Current stream uptime: " + 
-						(hours < 9 ? "0" + hours : "" + hours) + ":" + 
-						(mins < 9 ? "0" + mins : "" + mins) + ":" + 
-						(secs < 9 ? "0" + secs : "" + secs);
+						(hours 			< 9 ? "0" : "") + hours 		+ ":" + 
+						(timeDiffMins 	< 9 ? "0" : "") + timeDiffMins;
 		
 		String message = "Stream Uptime: " + uptime;
 		sendReply(message);

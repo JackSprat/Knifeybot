@@ -5,6 +5,7 @@ import java.util.concurrent.BlockingQueue;
 import logger.Logger;
 import messaging.IIncomingMessage;
 import messaging.IncomingMessage.InType;
+import state.ChannelState;
 import messaging.OutgoingMessage;
 import utils.ConfigLoader;
 
@@ -43,7 +44,10 @@ public class ProcLogin extends ProcBase {
 	@Override
 	public void tick() {
 		
-		if (loggedIn) { return; }
+		if (loggedIn) { 
+			ChannelState.updateStreamObjects(channel);
+			return;
+		}
 		
 		if (!sentPass) {
 			sendRaw("PASS " + ConfigLoader.getOAuth() + "\r\n");

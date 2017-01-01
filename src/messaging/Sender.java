@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
@@ -49,8 +50,10 @@ public class Sender implements ISender {
 		while (continueRunning) {
 			
 			OutgoingMessage message = listOut.poll();
-			for (Long time : messageTimes) {
-				if (System.currentTimeMillis() - 30*1000 > time) messageTimes.remove(time);
+			Iterator<Long> i = messageTimes.iterator();
+			while (i.hasNext()) {
+				Long time = i.next();
+				if (System.currentTimeMillis() - 30*1000 > time) i.remove();;
 			}
 			if (message != null && messageTimes.size() < 30) {
 				Logger.INFO(TextUtils.setLength("Snd: " + message.type.toString(), 15) + " - " + message.toString());

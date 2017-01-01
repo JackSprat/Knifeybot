@@ -83,7 +83,7 @@ public class UserManager {
 		
 		User u = getUser(username);
 		u.subNotify(channel, length);
-		if (length == 1) ChannelState.newSubNotify(channel, username);
+		//if (length == 1) ChannelState.newSubNotify(channel, username);
 		saveUser(username, u);
 		
 	}

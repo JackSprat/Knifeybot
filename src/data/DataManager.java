@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import state.ChannelState;
 import utils.DirectoryUtils;
 
 public class DataManager {
@@ -148,16 +149,16 @@ public class DataManager {
 
 	}
 	
-	public static synchronized void addCommand(String channel, String alias, String reply, boolean counter, boolean perGame) {
+	public static synchronized void addCommand(String channel, String alias, String reply) {
 		try {
 			Connection conn = dataSource.getConnection();
 			
-			PreparedStatement pstmt = conn.prepareStatement("INSERT INTO commands (channel, alias, reply, counter, pergame) VALUES ( ?, ?, ?, ?, ?)");
+			PreparedStatement pstmt = conn.prepareStatement("REPLACE INTO commands (channel, alias, reply, counter, pergame) VALUES ( ?, ?, ?, ?, ?)");
 			pstmt.setString(1, channel);
 			pstmt.setString(2, alias);
 			pstmt.setString(3, reply);
-			pstmt.setBoolean(4, counter);
-			pstmt.setBoolean(5, perGame);
+			pstmt.setBoolean(4, reply.contains("%counter"));
+			pstmt.setBoolean(5, reply.contains("%counterpg"));
 			pstmt.executeUpdate();
 			
 			pstmt.close();
@@ -178,12 +179,13 @@ public class DataManager {
 			pstmt.setString(2, channel);
 			pstmt.executeUpdate();
 			
-			pstmt = conn.prepareStatement("DELETE FROM counters WHERE alias=? AND channel=?");
-			pstmt.setString(1, alias);
-			pstmt.setString(2, channel);
-			pstmt.executeUpdate();
+			PreparedStatement pstmt2 = conn.prepareStatement("DELETE FROM counters WHERE alias=? AND channel=?");
+			pstmt2.setString(1, alias);
+			pstmt2.setString(2, channel);
+			pstmt2.executeUpdate();
 			
 			pstmt.close();
+			pstmt2.close();
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -284,7 +286,7 @@ public class DataManager {
 
 	}
 	
-	public static synchronized void setCounter(String channel, String alias, String game, int value) {
+	public static synchronized void setCounter(String channel, String alias, int value) {
 		try {
 			Connection conn = dataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM commands WHERE channel=? AND alias=?");
@@ -294,12 +296,11 @@ public class DataManager {
 			
 			while(rs.next()) {
 				if (rs.getBoolean("counter")) {
-					PreparedStatement pstmt2 = conn.prepareStatement("REPLACE INTO counters (channel, alias, game, value)");
+					PreparedStatement pstmt2 = conn.prepareStatement("REPLACE INTO counters (channel, alias, game, value) VALUES ( ?, ?, ?, ?)");
 					if (rs.getBoolean("pergame")) {
-						pstmt2.setString(3, "ALL");
+						pstmt2.setString(3, ChannelState.getCurrentGame(channel));
 					} else {
-						pstmt2 = conn.prepareStatement("SELECT * FROM counters WHERE channel=? AND alias=?");
-						pstmt2.setString(3, game);
+						pstmt2.setString(3, "ALL");
 					}
 					pstmt2.setString(1, channel);
 					pstmt2.setString(2, alias);

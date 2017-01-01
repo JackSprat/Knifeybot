@@ -3,12 +3,12 @@ package processing.command;
 import processing.CommandBase;
 import users.PermissionClass;
 
-public class CommandCommandView extends CommandBase {
+public class CommandView extends CommandBase {
 
 	@Override
 	public boolean isValid() {
 		
-		String command = ((ProcCommand)parent).getCommand(getToken("@alias").substring(1), getUser());
+		String command = ((ProcCommand)parent).getCommand(getToken("@alias").substring(1));
 		
 		if (command != null && command != "") 	return true;		
 												return false;
@@ -18,7 +18,7 @@ public class CommandCommandView extends CommandBase {
 	@Override
 	public void execute() {
 		
-		String commandStr = ((ProcCommand)parent).getCommand(getToken("@alias").substring(1), getUser());
+		String commandStr = ((ProcCommand)parent).getCommand(getToken("@alias").substring(1));
 		
 		String[] args = getToken("*").split(" ");
 		String[] commandSplitStr = commandStr.split("\\|");
