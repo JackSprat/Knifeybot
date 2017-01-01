@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 import logger.Logger;
@@ -15,6 +17,7 @@ public class Sender implements ISender {
 	private BlockingQueue<OutgoingMessage> listOut;
 	private BufferedWriter writer;
 	private boolean continueRunning = true;
+	private Set<Long> messageTimes = new HashSet<Long>();
 	
 	public Sender(Socket socket, BlockingQueue<OutgoingMessage> listOut) {
 		
@@ -46,8 +49,10 @@ public class Sender implements ISender {
 		while (continueRunning) {
 			
 			OutgoingMessage message = listOut.poll();
-			
-			if (message != null) {
+			for (Long time : messageTimes) {
+				if (System.currentTimeMillis() - 30*1000 > time) messageTimes.remove(time);
+			}
+			if (message != null && messageTimes.size() < 30) {
 				Logger.INFO(TextUtils.setLength("Snd: " + message.type.toString(), 15) + " - " + message.toString());
 				String m = message.toString();
 				
@@ -60,9 +65,10 @@ public class Sender implements ISender {
 				} catch (IOException ioex) {
 					Logger.STACK("Error writing to IRC socket", ioex);
 				}
+				messageTimes.add(System.currentTimeMillis());
 			}
 			
-			try { Thread.sleep(3000); } catch (InterruptedException e) { Logger.STACK("", e); }
+			try { Thread.sleep(1500); } catch (InterruptedException e) { Logger.STACK("", e); }
 
 		}
 		

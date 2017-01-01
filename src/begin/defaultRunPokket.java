@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import data.DataManager;
 import gui.ChannelTab;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -31,6 +32,8 @@ public class defaultRunPokket extends Application {
 	public void start(Stage primaryStage) {
 
 		ChannelManager manager = new ChannelManager(test);
+		DataManager.initialiseDB();
+		
 		new Thread(manager).start();
 		primaryStage.setTitle("Knifeybot");
 		

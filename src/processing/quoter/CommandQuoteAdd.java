@@ -1,6 +1,6 @@
 package processing.quoter;
 
-import channel.DataManager;
+import data.DataManager;
 import processing.CommandBase;
 import users.PermissionClass;
 

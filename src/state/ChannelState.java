@@ -7,6 +7,12 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import com.mb3364.twitch.api.Twitch;
+import com.mb3364.twitch.api.handlers.ChannelResponseHandler;
+import com.mb3364.twitch.api.handlers.StreamResponseHandler;
+import com.mb3364.twitch.api.models.Channel;
+import com.mb3364.twitch.api.models.Stream;
+
 import logger.Logger;
 import messaging.IncomingMessage;
 import messaging.OutgoingMessage;
@@ -21,6 +27,10 @@ public class ChannelState {
 	protected int deaths = 0;
 	private long lastChannelMessage = 0;
 	
+	private Twitch twitchAPI;
+	private Channel twitchChannel;
+	private Stream stream;
+	
 	protected long lastStreamEnd = 0;
 	
 	private BlockingQueue<IncomingMessage> messageFromIRC = 	new LinkedBlockingQueue<IncomingMessage>();
@@ -30,12 +40,50 @@ public class ChannelState {
 	private BlockingQueue<OutgoingMessage> messageToWeb = 		new LinkedBlockingQueue<OutgoingMessage>();
 	
 	private ChannelState() {
+		twitchAPI = new Twitch();
+		twitchAPI.setClientId("h6aj63iy3hapxofqywj8qk7uoeey5ww");
+	}
+	
+	public static synchronized void updateStreamObjects() {
+		for (String channel : channels.keySet()) {
+			if (channels.get(channel).isLive) {
+				updateObject(channel);
+			}
+		}
+	}
+	
+	private static synchronized void updateObject(String channel) {
 		
+		ChannelState state = channels.get(channel);
+		
+		state.twitchAPI.streams().get(channel, new StreamResponseHandler() {
+		    @Override
+		    public void onSuccess(Stream s) { state.stream = s; }
+
+			@Override
+			public void onFailure(Throwable arg0) { Logger.WARNING("failed to get channel info"); }
+
+			@Override
+			public void onFailure(int arg0, String arg1, String arg2) { Logger.WARNING("failed to get channel info"); }
+		});
+		state.twitchAPI.channels().get(channel, new ChannelResponseHandler() {
+		    @Override
+		    public void onSuccess(Channel c) { state.twitchChannel = c; }
+
+			@Override
+			public void onFailure(Throwable arg0) { Logger.WARNING("failed to get channel info"); }
+
+			@Override
+			public void onFailure(int arg0, String arg1, String arg2) { Logger.WARNING("failed to get channel info"); }
+		});
 	}
 	
 	public static synchronized void registerChannel(String channelName) {
 		Logger.INFO("Registering ChannelState for " + channelName);
-		channels.put(channelName, new ChannelState());
+		ChannelState c = new ChannelState();
+		
+		channels.put(channelName, c);
+		
 	}
 	
 	public static synchronized void newSubNotify (String channelName, String username) {
@@ -83,18 +131,14 @@ public class ChannelState {
 		channels.get(channelName).messagesIn.clear();
 		return messages;
 	}
-	
-	public static synchronized void addDeaths(String channelName, int value) {
-		int previousDeaths = channels.get(channelName).deaths;
-		channels.get(channelName).deaths = previousDeaths + value;
-	}
-	
-	public static synchronized int getDeaths(String channelName) {
-		return channels.get(channelName).deaths;
-	}
-	
+
 	public static synchronized Set<String> getChannelList() {
 		return channels.keySet();
+	}
+	
+	public static synchronized String getCurrentGame(String channel) {
+		if (channels.get(channel) != null) return channels.get(channel).twitchChannel.getGame();
+		return "";
 	}
 	
 	public static synchronized BlockingQueue<OutgoingMessage> getMessageFromProc(String channelName) { return channels.get(channelName).messageFromProc; }

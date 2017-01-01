@@ -1,23 +1,18 @@
 package begin;
 
-import java.io.File;
-import java.util.Set;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
-import channel.DataManager;
-import messaging.WebReceiver;
-import users.UserManager;
+import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+
+import data.DataManager;
 
 public class Test {
 	public static void main (String[] args) {
-		WebReceiver wr = new WebReceiver();
-		Thread t = new Thread(wr);
-		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		DataManager.initialiseDB();
+		DataManager.addQuote("testchannel2", "testalias", "testuser", "testquote");
 		
 	}
 }

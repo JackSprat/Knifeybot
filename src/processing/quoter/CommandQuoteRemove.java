@@ -1,6 +1,6 @@
 package processing.quoter;
 
-import channel.DataManager;
+import data.DataManager;
 import processing.CommandBase;
 import users.PermissionClass;
 
@@ -34,7 +34,7 @@ public class CommandQuoteRemove extends CommandBase {
 		
 		if (q != null) {
 			
-			DataManager.removeQuote(parent.channel, (long) id);
+			DataManager.removeQuote(parent.channel, id);
 			sendReply("Quote " + id + " deleted");
 
 		}

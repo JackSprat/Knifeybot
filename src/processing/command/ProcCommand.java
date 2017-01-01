@@ -2,9 +2,10 @@ package processing.command;
 
 import java.util.concurrent.BlockingQueue;
 
-import channel.DataManager;
+import data.DataManager;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
+import state.ChannelState;
 import users.UserManager;
 
 public class ProcCommand extends ProcBase {
@@ -13,9 +14,6 @@ public class ProcCommand extends ProcBase {
 		
 		super(listOut, channel);
 		
-		commands.add(new CommandAdd());
-		commands.add(new CommandRemove());
-		commands.add(new CommandEdit());
 		commands.add(new CommandAddGlobal());
 		commands.add(new CommandRemoveGlobal());
 		commands.add(new CommandEditGlobal());
@@ -24,12 +22,10 @@ public class ProcCommand extends ProcBase {
 	}
 	
 	public String getCommand(String alias, String user) {
-
-		String reply = UserManager.getCommand(user, alias);
 		
-		if (reply != "" && reply != null) return reply;
+		String game = ChannelState.getCurrentGame(this.channel);
 		
-		reply = DataManager.getCommand(channel, alias);
+		String reply = DataManager.getCommand(channel, alias, game);
 		
 		if (reply != "" && reply != null) return reply;
 		
