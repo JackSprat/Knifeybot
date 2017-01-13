@@ -74,9 +74,10 @@ public class DataManager {
 		try {
 			Connection conn = dataSource.getConnection();
 			
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM quotes WHERE channel=? AND alias=? ORDER BY RAND() LIMIT 1");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM quotes WHERE channel=? AND (alias=? or username=?) ORDER BY RAND() LIMIT 1");
 			pstmt.setString(1, channel);
 			pstmt.setString(2, alias);
+			pstmt.setString(3, alias);
 			ResultSet rs = pstmt.executeQuery();
 			
 			String s = "";
