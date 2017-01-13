@@ -3,15 +3,9 @@ package processing.server;
 import java.util.concurrent.BlockingQueue;
 
 import com.mb3364.twitch.api.Twitch;
-import com.mb3364.twitch.api.handlers.ChannelResponseHandler;
-import com.mb3364.twitch.api.handlers.StreamResponseHandler;
 import com.mb3364.twitch.api.models.Channel;
-import com.mb3364.twitch.api.models.Stream;
-
-import logger.Logger;
 import messaging.OutgoingMessage;
 import processing.ProcBase;
-import state.ChannelState;
 
 public class ProcInfo extends ProcBase {
 	

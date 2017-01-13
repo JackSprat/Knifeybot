@@ -18,7 +18,6 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import messaging.ChannelManager;
 import messaging.IncomingMessage;
 import messaging.OutgoingMessage;
 import messaging.OutgoingMessage.OutType;

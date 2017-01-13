@@ -6,7 +6,6 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import logger.Logger;
-import state.ChannelState;
 import utils.DirectoryUtils;
 
 public class UserManager {

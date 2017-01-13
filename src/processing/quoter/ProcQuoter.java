@@ -22,7 +22,7 @@ public class ProcQuoter extends ProcBase {
 		try {
 			int id = Integer.parseInt(alias);
 			return DataManager.getQuote(channel, id);
-		} catch (NumberFormatException nfe) {
+		} catch (@SuppressWarnings("unused") NumberFormatException nfe) {
 			return DataManager.getQuote(channel, alias);
 		}
 		

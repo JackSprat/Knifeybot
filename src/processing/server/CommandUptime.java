@@ -16,7 +16,6 @@ public class CommandUptime extends CommandBase {
 
 		Logger.DEBUG("Stream time live in m: " + timeDiffMins);
 
-		int mins = (int) (timeDiffMins);
 		int hours = (int) (timeDiffMins / 60);
 		String uptime = "Current stream uptime: " + 
 						(hours 			< 9 ? "0" : "") + hours 		+ ":" + 

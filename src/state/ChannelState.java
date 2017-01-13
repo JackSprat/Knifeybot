@@ -144,6 +144,7 @@ public class ChannelState {
 	}
 	
 	public static synchronized ArrayList<IncomingMessage> retrieveMessages (String channelName) {
+		@SuppressWarnings("unchecked")
 		ArrayList<IncomingMessage> messages = (ArrayList<IncomingMessage>) channels.get(channelName).messagesIn.clone();
 		channels.get(channelName).messagesIn.clear();
 		return messages;

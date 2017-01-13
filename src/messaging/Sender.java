@@ -53,7 +53,7 @@ public class Sender implements ISender {
 			Iterator<Long> i = messageTimes.iterator();
 			while (i.hasNext()) {
 				Long time = i.next();
-				if (System.currentTimeMillis() - 30*1000 > time) i.remove();;
+				if (System.currentTimeMillis() - 30*1000 > time) i.remove();
 			}
 			if (message != null && messageTimes.size() < 30) {
 				Logger.INFO(TextUtils.setLength("Snd: " + message.type.toString(), 15) + " - " + message.toString());

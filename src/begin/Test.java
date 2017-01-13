@@ -1,11 +1,5 @@
 package begin;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
 import data.DataManager;
 
 public class Test {
