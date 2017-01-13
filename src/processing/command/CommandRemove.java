@@ -10,7 +10,7 @@ public class CommandRemove extends CommandBase {
 	public void execute() {
 		
 		DataManager.removeCommand(parent.channel, getToken("@alias"));
-		sendReply(getUser() + ", global response \"" + getToken("@alias") + "\" deleted");
+		sendReply(getUser() + ", response \"" + getToken("@alias") + "\" deleted");
 		
 	}
 	
@@ -18,4 +18,5 @@ public class CommandRemove extends CommandBase {
 	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
 	@Override public String getFormatTokens() 				{ return "kcommand remove @alias"; }
 	@Override public String getHelpString() 				{ return "This command removes the response <alias>"; }
+	
 }
