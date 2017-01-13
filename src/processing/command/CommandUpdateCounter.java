@@ -1,6 +1,5 @@
 package processing.command;
 
-import data.DataManager;
 import processing.CommandBase;
 import users.PermissionClass;
 
@@ -35,9 +34,9 @@ public class CommandUpdateCounter extends CommandBase {
 		if (!amountToken.equals("")) {
 			try {
 				int i = Integer.parseInt(amountToken);
-				if (i > 1) amount = i;
-			} catch (NumberFormatException nfe) {
-				
+				amount = i;
+			} catch (@SuppressWarnings("unused") NumberFormatException nfe) {
+				amount = 0;
 			}
 		}
 		
