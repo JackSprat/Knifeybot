@@ -42,22 +42,6 @@ public class UserManager {
 		}
 	}
 	
-	public static synchronized void addCommand(String username, String alias, String reply) {
-
-			User u = getUser(username);
-			u.addCommand(alias, reply);
-			saveUser(username, u);
-
-	}
-	public static synchronized void removeCommand(String username, String alias) {
-		
-		User u = getUser(username);
-		u.removeCommand(alias);
-		saveUser(username, u);
-
-	}
-	public static synchronized String getCommand(String username, String alias) { return getUser(username).getCommand(alias); }
-	
 	public static synchronized boolean spendPoints(String channel, String username, int points) {
 		
 		User u = getUser(username);

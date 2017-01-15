@@ -20,5 +20,4 @@ public enum PermissionClass {
 		default: return null;
 		}
 	}
-	
 }
