@@ -32,13 +32,7 @@ public class ProcCommand extends ProcBase {
 		
 	}
 
-	public int getCounter(String alias) {
-		String game = ChannelState.getCurrentGame(this.channel);
-		
-		int counter = DataManager.getCounter(this.channel, alias, game);
-		
-		return counter;
-	}
+	
 	
 	public void setCounter(String alias, int value) {
 		DataManager.setCounter(this.channel, alias, value);
