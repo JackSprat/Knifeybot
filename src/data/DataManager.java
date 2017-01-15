@@ -362,7 +362,7 @@ public class DataManager {
 			pstmt.setString(2, username);
 			ResultSet rs = pstmt.executeQuery();
 			
-			int userlevel = 0;
+			int userlevel = 1;
 			while(rs.next()){
 				userlevel = rs.getInt("level");
 			}
