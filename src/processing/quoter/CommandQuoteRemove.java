@@ -2,7 +2,6 @@ package processing.quoter;
 
 import data.DataManager;
 import processing.CommandBase;
-import users.PermissionClass;
 
 public class CommandQuoteRemove extends CommandBase {
 	
@@ -43,8 +42,7 @@ public class CommandQuoteRemove extends CommandBase {
 
 	}
 
-	@Override public String getPermissionString() 			{ return "quoter.removequote"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
+	@Override public String getPermissionString() 			{ return "quotes.remove"; }
 	@Override public String getFormatTokens() 				{ return "kquote remove @ID"; }
 	@Override public String getHelpString() 				{ return "This command removes a quote with quote ID <ID>"; }
 	

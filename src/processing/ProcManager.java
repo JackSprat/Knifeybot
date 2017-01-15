@@ -9,12 +9,9 @@ import messaging.IIncomingMessage;
 import messaging.IncomingMessage;
 import messaging.OutgoingMessage;
 import processing.command.ProcCommand;
+import processing.functions.ProcFunctions;
 import processing.permissions.ProcPermissions;
-import processing.pokemon.ProcPokemon;
 import processing.quoter.ProcQuoter;
-import processing.responder.ProcResponder;
-import processing.roll.ProcRoll;
-import processing.server.ProcInfo;
 import processing.uptime.ProcUptime;
 
 public class ProcManager extends Thread implements Runnable {
@@ -26,20 +23,14 @@ public class ProcManager extends Thread implements Runnable {
 	public ProcManager(BlockingQueue<IncomingMessage> listIn, BlockingQueue<OutgoingMessage> listOut, String channel) {
 		Logger.INFO("Initialising ProcessManager for " + channel);
 		
-		//processors.add(ProcTimeConverter.getProcTimeConverter());
 		processors.add(new ProcQuoter(listOut, channel));
-		processors.add(new ProcRoll(listOut, channel));
+		processors.add(new ProcFunctions(listOut, channel));
 		processors.add(new ProcLogin(listOut, channel));
 		processors.add(new ProcPermissions(listOut, channel));
 		processors.add(new ProcCommand(listOut, channel));
 		processors.add(new ProcUptime(listOut, channel));
-		//processors.add(new ProcHelp(listOut, channel));
-		processors.add(new ProcInfo(listOut, channel));
-		//processors.add(new ProcRepeat(listOut, channel));
-		processors.add(new ProcPokemon(listOut, channel));
-		processors.add(new ProcResponder(listOut, channel));
+		//processors.add(new ProcPokemon(listOut, channel));
 		
-		//if (channel == "pokket") processors.add(new ProcPokemon(listOut, channel));
 		
 		for (ProcBase processor : processors) {
 			for (CommandBase command : processor.getCommands()) {

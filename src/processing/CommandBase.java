@@ -2,11 +2,11 @@ package processing;
 
 import java.util.concurrent.BlockingQueue;
 
+import data.DataManager;
 import messaging.IIncomingMessage;
 import messaging.IncomingMessage.InType;
 import messaging.OutgoingMessage;
 import users.PermissionClass;
-import users.UserManager;
 
 public abstract class CommandBase {
 	
@@ -15,9 +15,12 @@ public abstract class CommandBase {
 	protected ProcBase parent;
 	
 	public abstract String 			getPermissionString();
-	public abstract PermissionClass getPermissionClass();
 	public abstract String			getFormatTokens();
 	public abstract String			getHelpString();
+	
+	public final PermissionClass getPermissionClass() {
+		return DataManager.getPermissionClass(parent.channel, this.getPermissionString());
+	}
 	
 
 	public void setParent(ProcBase parent, BlockingQueue<OutgoingMessage> listOut) {
@@ -102,8 +105,8 @@ public abstract class CommandBase {
 				
 		
 		if (!isMatch()) 													return false;	//if match info is invalid (custom)
-		if (!UserManager.hasPermission(parent.channel, in.getUser(), 
-				getPermissionString(), getPermissionClass().ordinal()))		return false;	//if user has no permissions
+		if (!DataManager.hasPermission(parent.channel, in.getUser(), 
+				getPermissionString()))										return false;	//if user has no permissions
 		if (!isValid())														return false;	//if command has invalid parameters (custom)
 		
 		boolean validInputType = false;

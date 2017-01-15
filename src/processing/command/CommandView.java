@@ -1,7 +1,6 @@
 package processing.command;
 
 import processing.CommandBase;
-import users.PermissionClass;
 
 public class CommandView extends CommandBase {
 
@@ -46,7 +45,6 @@ public class CommandView extends CommandBase {
 	}
 
 	@Override public String getPermissionString() 			{ return "command.view"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
 	@Override public String getFormatTokens() 				{ return "@alias *"; }
 	@Override public String getHelpString() 				{ return "This command views the response <alias>"; }
 	

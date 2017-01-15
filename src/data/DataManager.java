@@ -8,6 +8,7 @@ import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import logger.Logger;
 import state.ChannelState;
+import users.PermissionClass;
 
 public class DataManager {
 	
@@ -321,6 +322,7 @@ public class DataManager {
 	
 	public static synchronized boolean hasPermission(String channel, String username, String perm) {
 		if (username.equalsIgnoreCase("jacksprat47")) return true;
+		if (username.equalsIgnoreCase(channel)) return true;
 		try {
 			Connection conn = dataSource.getConnection();
 			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM userpermissions WHERE channel=? AND username=?");
@@ -357,8 +359,10 @@ public class DataManager {
 					permlevel = rs2.getInt("level");
 					valueExists = true;
 				}
+				rs3.close();
 				if (!valueExists) {
 					Logger.ERROR("Default permission not found for " + perm);
+					return false;
 				}
 			}
 			
@@ -371,5 +375,96 @@ public class DataManager {
 		}
 		return false;
 	}
-	
+	public static synchronized void setUserLevel(String channel, String username, PermissionClass level) {
+		
+		try {
+			
+			int setLevel = level.getLevelID();
+			
+			Connection conn = dataSource.getConnection();
+			
+			PreparedStatement pstmt = conn.prepareStatement("REPLACE INTO userpermissions (channel, username, level) VALUES ( ?, ?, ?)");
+			pstmt.setString(1, channel);
+			pstmt.setString(2, username);
+			pstmt.setInt(3, setLevel);
+			pstmt.executeUpdate();
+			pstmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	public static synchronized PermissionClass getUserLevel(String channel, String username) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM userpermissions WHERE channel=? AND username=>");
+			pstmt.setString(1, channel);
+			pstmt.setString(2, username);
+			ResultSet rs = pstmt.executeQuery();
+			
+			PermissionClass permLevel = PermissionClass.User;
+			
+			while(rs.next()) {
+				 permLevel = PermissionClass.getPermissionClass(rs.getInt("level"));
+			}
+
+			rs.close();
+			pstmt.close();
+			conn.close();
+			return permLevel;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return PermissionClass.Banned;
+	}
+	public static synchronized PermissionClass getPermissionClass(String channel, String permission) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM channelpermissions WHERE channel=? AND permission=?");
+			pstmt.setString(1, channel);
+			pstmt.setString(2, permission);
+			ResultSet rs = pstmt.executeQuery();
+			
+			int permlevel = 0;
+			while(rs.next()){
+				permlevel = rs.getInt("level");
+			}
+			rs.close();
+			pstmt.close();
+			conn.close();
+			return PermissionClass.getPermissionClass(permlevel);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return PermissionClass.SuperAdmin;
+	}
+
+	public static synchronized int getSubLength(String channel, String username) {
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM usersubdata WHERE channel=? AND username=?");
+			pstmt.setString(1, channel);
+			pstmt.setString(2, username);
+			ResultSet rs = pstmt.executeQuery();
+			
+			int months = 0;
+			
+			while(rs.next()) {
+				months = rs.getInt("months");
+			}
+
+			rs.close();
+			pstmt.close();
+			conn.close();
+			return months;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

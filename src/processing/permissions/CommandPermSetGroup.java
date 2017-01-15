@@ -1,8 +1,8 @@
 package processing.permissions;
 
+import data.DataManager;
 import processing.CommandBase;
 import users.PermissionClass;
-import users.UserManager;
 
 public class CommandPermSetGroup extends CommandBase {
 	
@@ -20,13 +20,13 @@ public class CommandPermSetGroup extends CommandBase {
 	@Override
 	public void execute() {
 		
-		int editorPermClass = UserManager.getPermLevel(parent.channel, getUser());
+		PermissionClass editorPermClass = DataManager.getUserLevel(parent.channel, getUser());
 		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("permgroup"));
 		System.out.println(editorPermClass + ", " + permClass.ordinal());
 		
-		if (editorPermClass > permClass.ordinal() || getUser().equalsIgnoreCase("jacksprat47")) {
+		if (editorPermClass.ordinal() > permClass.ordinal()) {
 			
-			UserManager.setPermLevel(parent.channel, getToken("user"), permClass.ordinal());
+			DataManager.setUserLevel(parent.channel, getToken("user"), permClass);
 			sendReply(getToken("user") + " now has group: " + getToken("permgroup"));
 			
 		}
@@ -34,7 +34,6 @@ public class CommandPermSetGroup extends CommandBase {
 	}
 
 	@Override public String getPermissionString() 			{ return "permissions.setgroup"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
 	@Override public String getFormatTokens() 				{ return "kperm setgroup @user @permgroup"; }
 	@Override public String getHelpString() 				{ return "This command grants <permgroup> to <user>"; }
 	

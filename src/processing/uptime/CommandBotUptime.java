@@ -1,7 +1,6 @@
 package processing.uptime;
 
 import processing.CommandBase;
-import users.PermissionClass;
 
 public class CommandBotUptime extends CommandBase {
 
@@ -23,9 +22,8 @@ public class CommandBotUptime extends CommandBase {
 		
 	}
 	
-	@Override public String getPermissionString() 			{ return "uptime.bot"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
-	@Override public String getFormatTokens() 				{ return "kuptime"; }
+	@Override public String getPermissionString() 			{ return "functions.botuptime"; }
+	@Override public String getFormatTokens() 				{ return "botuptime"; }
 	@Override public String getHelpString() 				{ return "This command shows Knifeybot's uptime"; }
 
 }

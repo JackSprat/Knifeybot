@@ -1,7 +1,8 @@
 package processing.command;
 
+import data.DataManager;
 import processing.CommandBase;
-import users.PermissionClass;
+import state.ChannelState;
 
 public class CommandUpdateCounter extends CommandBase {
 
@@ -25,7 +26,7 @@ public class CommandUpdateCounter extends CommandBase {
 	public void execute() {
 		
 		String alias = getToken("@alias");
-		int counter = ((ProcCommand)parent).getCounter(alias.substring(1, alias.length()-1));
+		int counter = getCounter(alias.substring(1, alias.length()-1));
 		
 		int amount = 1;
 		
@@ -49,9 +50,16 @@ public class CommandUpdateCounter extends CommandBase {
 		}
 		
 	}
+	
+	private int getCounter(String alias) {
+		String game = ChannelState.getCurrentGame(parent.channel);
+		
+		int counter = DataManager.getCounter(parent.channel, alias, game);
+		
+		return counter;
+	}
 
 	@Override public String getPermissionString() 			{ return "command.counter"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.Mod; }
 	@Override public String getFormatTokens() 				{ return "@alias #amount"; }
 	@Override public String getHelpString() 				{ return "This command updates <alias> counter, using :alias+ <value>, :alias- <value> or :alias= <value>"; }
 	

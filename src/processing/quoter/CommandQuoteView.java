@@ -2,7 +2,6 @@ package processing.quoter;
 
 import data.DataManager;
 import processing.CommandBase;
-import users.PermissionClass;
 
 public class CommandQuoteView extends CommandBase {
 
@@ -42,8 +41,7 @@ public class CommandQuoteView extends CommandBase {
 		
 	}
 
-	@Override public String getPermissionString() 			{ return "quoter.viewquote"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
+	@Override public String getPermissionString() 			{ return "quotes.view"; }
 	@Override public String getFormatTokens() 				{ return "kquote @alias"; }
 	@Override public String getHelpString() 				{ return "This command views a quote with ID or alias <alias>, or a random quote if <alias> is \"random\""; }
 	

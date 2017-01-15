@@ -1,8 +1,7 @@
 package processing.permissions;
 
+import data.DataManager;
 import processing.CommandBase;
-import users.PermissionClass;
-import users.UserManager;
 
 public class CommandPermShow extends CommandBase {
 
@@ -13,16 +12,11 @@ public class CommandPermShow extends CommandBase {
 		
 		if (specifiedUser != null && specifiedUser != "") user = specifiedUser;
 		
-		for (PermissionClass p : PermissionClass.values()){
-			if (p.ordinal() == UserManager.getPermLevel(parent.channel, user)) {
-				sendReply(user + " has group: " + p.toString());
-			}
-		}
+		sendReply(user + " has group: " + DataManager.getUserLevel(parent.channel, user));
 
 	}
 
-	@Override public String getPermissionString() 			{ return "permissions.setgroup"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
+	@Override public String getPermissionString() 			{ return "permissions.show"; }
 	@Override public String getFormatTokens() 				{ return "kperm show #user"; }
 	@Override public String getHelpString() 				{ return "This command shows permissions, optionally for [user]"; }
 	
