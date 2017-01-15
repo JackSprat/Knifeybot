@@ -4,6 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 import logger.Logger;
@@ -19,6 +22,35 @@ public class DataManager {
 		dataSource.setPassword("celticrno1");
 		dataSource.setServerName("192.168.1.68");
 		dataSource.setDatabaseName("knifeybot");
+	}
+	
+	public static synchronized List<String> getActiveChannels() {
+		
+		try {
+			Connection conn = dataSource.getConnection();
+			//Get max+1 quote ID
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM streams WHERE active=?");
+			pstmt.setBoolean(1, true);
+			ResultSet rs = pstmt.executeQuery();
+			
+			List<String> channels = new ArrayList<String>();
+			
+			while(rs.next()){
+				channels.add(rs.getString("channel"));
+			}
+			
+			rs.close();
+			pstmt.close();
+			conn.close();
+			
+			return channels;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+		
 	}
 	
 	public static synchronized void addQuote(String channel, String alias, String username, String quote) {
@@ -341,7 +373,7 @@ public class DataManager {
 			pstmt.setString(2, perm);
 			ResultSet rs2 = pstmt.executeQuery();
 			
-			int permlevel = 0;
+			int permlevel = 1;
 			boolean valueExists = false;
 			while(rs2.next()){
 				permlevel = rs2.getInt("level");
@@ -356,7 +388,7 @@ public class DataManager {
 				pstmt.setString(2, perm);
 				ResultSet rs3 = pstmt.executeQuery();
 				while(rs3.next()){
-					permlevel = rs2.getInt("level");
+					permlevel = rs3.getInt("level");
 					valueExists = true;
 				}
 				rs3.close();
@@ -399,7 +431,7 @@ public class DataManager {
 	public static synchronized PermissionClass getUserLevel(String channel, String username) {
 		try {
 			Connection conn = dataSource.getConnection();
-			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM userpermissions WHERE channel=? AND username=>");
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM userpermissions WHERE channel=? AND username=?");
 			pstmt.setString(1, channel);
 			pstmt.setString(2, username);
 			ResultSet rs = pstmt.executeQuery();
