@@ -1,31 +1,19 @@
 package messaging;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import data.DataManager;
 import state.ChannelState;
 
 public class ChannelManager implements Runnable {
 
-	private static List<String> channels = new ArrayList<String>();
 	private static Map<String, IChannelHandler> handlers = Collections.synchronizedMap(new HashMap<String, IChannelHandler>());
-	
-	public ChannelManager(String[] test) {
-		channels.addAll(Arrays.asList(test));
-	}
 
 	@Override
 	public void run() {
-		
-		for (String channel : channels) {
-			IChannelHandler h = new BaseChannelHandler(channel);
-			handlers.put(channel, h);
-			new Thread(h).start();
-		}
 		
 		WebReceiver webRec = new WebReceiver();
 		new Thread(webRec).start();
@@ -37,6 +25,9 @@ public class ChannelManager implements Runnable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+			List<String> channels = DataManager.getActiveChannels();
+			
 			logger.Logger.TRACE("Checking thread state");
 			for (String channel : channels) {
 				try {
@@ -49,6 +40,9 @@ public class ChannelManager implements Runnable {
 					}
 				} catch (NullPointerException npe) {
 					logger.Logger.STACK("Channel not initialised properly", npe);
+					IChannelHandler h = new BaseChannelHandler(channel);
+					handlers.put(channel, h);
+					new Thread(h).start();
 				}
 				
 			}

@@ -6,6 +6,7 @@ import state.ChannelState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import data.DataManager;
@@ -17,9 +18,8 @@ import javafx.scene.control.TabPane;
 import javafx.stage.Stage;
 import logger.Logger;
 
-public class defaultRunPokket extends Application {
+public class DefaultRun extends Application {
 	
-	private static String[] test = {"woundedpoptart", "mandalorianfury", "dashadow", "pokket", "jacksprat47", "stedeb", "fragmentshader", "filipenergy", "themeta4gaming"};
 	private static Map<String, ChannelTab> channelTabList = new HashMap<String, ChannelTab>();
 	
 	public static void main(String[] args) throws InterruptedException {
@@ -31,15 +31,17 @@ public class defaultRunPokket extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		ChannelManager manager = new ChannelManager(test);
 		DataManager.initialiseDB();
 		
+		ChannelManager manager = new ChannelManager();
 		new Thread(manager).start();
 		primaryStage.setTitle("Knifeybot");
 		
 		TabPane channels = new TabPane();
 		
-        for (String s : test) {
+		List<String> channelList = DataManager.getActiveChannels();
+		
+        for (String s : channelList) {
         	channelTabList.put(s, new ChannelTab(s, channels));
         }
         
@@ -71,7 +73,7 @@ public class defaultRunPokket extends Application {
 	                } catch (Exception ex) {
 	                    Logger.WARNING("Error waiting in UI thread\n" + ex.getMessage());
 	                }
-                	for (String s : test) {
+                	for (String s : channelList) {
                 		
                     	ArrayList<IncomingMessage> messages = ChannelState.retrieveMessages(s);
                     	
