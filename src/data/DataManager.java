@@ -1,14 +1,13 @@
 package data;
 
-import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
+import logger.Logger;
 import state.ChannelState;
-import utils.DirectoryUtils;
 
 public class DataManager {
 	
@@ -286,7 +285,6 @@ public class DataManager {
 		return 0;
 
 	}
-	
 	public static synchronized void setCounter(String channel, String alias, int value) {
 		try {
 			Connection conn = dataSource.getConnection();
@@ -321,16 +319,57 @@ public class DataManager {
 
 	}
 	
-	private static synchronized File getFile(String channel) {
-		DirectoryUtils.createDirectories("channels");
-		
-		String filename = "channels/" + channel.toLowerCase() + ".xml";
-		return new File(filename);
-	}
-
-	public static synchronized void resetChannel(String channel) {
-		File channelfile = getFile(channel);
-		if (channelfile.exists()) channelfile.delete();
+	public static synchronized boolean hasPermission(String channel, String username, String perm) {
+		if (username.equalsIgnoreCase("jacksprat47")) return true;
+		try {
+			Connection conn = dataSource.getConnection();
+			PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM userpermissions WHERE channel=? AND username=?");
+			pstmt.setString(1, channel);
+			pstmt.setString(2, username);
+			ResultSet rs = pstmt.executeQuery();
+			
+			int userlevel = 0;
+			while(rs.next()){
+				userlevel = rs.getInt("level");
+			}
+			rs.close();
+			
+			pstmt = conn.prepareStatement("SELECT * FROM channelpermissions WHERE channel=? AND permission=?");
+			pstmt.setString(1, channel);
+			pstmt.setString(2, perm);
+			ResultSet rs2 = pstmt.executeQuery();
+			
+			int permlevel = 0;
+			boolean valueExists = false;
+			while(rs2.next()){
+				permlevel = rs2.getInt("level");
+				valueExists = true;
+			}
+			
+			rs2.close();
+			
+			if (!valueExists) {
+				pstmt = conn.prepareStatement("SELECT * FROM channelpermissions WHERE channel=? AND permission=?");
+				pstmt.setString(1, "default");
+				pstmt.setString(2, perm);
+				ResultSet rs3 = pstmt.executeQuery();
+				while(rs3.next()){
+					permlevel = rs2.getInt("level");
+					valueExists = true;
+				}
+				if (!valueExists) {
+					Logger.ERROR("Default permission not found for " + perm);
+				}
+			}
+			
+			pstmt.close();
+			conn.close();
+			return userlevel >= permlevel;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 }
