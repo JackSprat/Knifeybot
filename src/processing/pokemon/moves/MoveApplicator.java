@@ -23,7 +23,7 @@ public class MoveApplicator {
 		
 		
 		if (move.hasFacet(MoveFacet.DEALS_DAMAGE)) {
-			int damage = (int) calculateDamage(user, target, move, listOut);
+			int damage = (int) calculateDamage(user, target, move);
 			target.modifyHP(-damage);
 		}
 		
@@ -36,7 +36,7 @@ public class MoveApplicator {
 
 	}
 	
-	private static float calculateDamage(PokemonObject user, PokemonObject target, Move move, BlockingQueue<OutgoingMessage> listOut) {
+	private static float calculateDamage(PokemonObject user, PokemonObject target, Move move) {
 		
 		float damage = 0;
 		
@@ -159,6 +159,8 @@ public class MoveApplicator {
 					if (targetInstance == MoveType.FIGHTING || targetInstance == MoveType.STEEL || targetInstance == MoveType.DARK) effectiveness *= 0.5f;
 					if (targetInstance == MoveType.GHOST || targetInstance == MoveType.PSYCHIC) effectiveness *= 2f;
 					break;
+			default:
+				break;
 			}
 		}
 		

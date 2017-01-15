@@ -5,7 +5,6 @@ import processing.pokemon.creation.PokemonObject;
 import processing.pokemon.creation.PokemonUser;
 import processing.pokemon.moves.Move;
 import processing.pokemon.moves.MoveType;
-import users.PermissionClass;
 
 public class CommandViewPokemon extends CommandBase {
 	
@@ -14,9 +13,9 @@ public class CommandViewPokemon extends CommandBase {
 		
 		
 		long[] party = PokemonUser.getParty(getUser());
-		long[] pc = PokemonUser.getPC(getUser(), -1);
+		//long[] pc = PokemonUser.getPC(getUser(), -1);
 		
-		String target = getToken("pc|party");
+		//String target = getToken("pc|party");
 		
 		int id = Integer.parseInt(getToken("index"));
 		long uuid = 0;
@@ -58,7 +57,6 @@ public class CommandViewPokemon extends CommandBase {
 	}
 
 	@Override public String getPermissionString() 			{ return "kpokemon.viewpokemon"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
 	@Override public String getFormatTokens() 				{ return "poke pc|party #index"; }
 	@Override public String getHelpString() 				{ return "This command views the user's pokemon."; }
 	

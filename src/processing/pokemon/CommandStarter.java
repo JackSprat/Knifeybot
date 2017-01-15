@@ -3,7 +3,6 @@ package processing.pokemon;
 import processing.CommandBase;
 import processing.pokemon.creation.PokemonObject;
 import processing.pokemon.creation.PokemonUser;
-import users.PermissionClass;
 
 public class CommandStarter extends CommandBase {
 
@@ -40,7 +39,6 @@ public class CommandStarter extends CommandBase {
 	}
 
 	@Override public String getPermissionString() 			{ return "kpokemon.starter"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
 	@Override public String getFormatTokens() 				{ return "poke starter @id"; }
 	@Override public String getHelpString() 				{ return "This command slects a starter pokemon."; }
 	
