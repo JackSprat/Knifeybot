@@ -1,9 +1,8 @@
-package processing.server;
+package processing.functions;
 
 import logger.Logger;
 import processing.CommandBase;
 import state.ChannelState;
-import users.PermissionClass;
 
 public class CommandUptime extends CommandBase {
 
@@ -26,8 +25,7 @@ public class CommandUptime extends CommandBase {
 		
 	}
 	
-	@Override public String getPermissionString() 			{ return "server.uptime"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
+	@Override public String getPermissionString() 			{ return "functions.uptime"; }
 	@Override public String getFormatTokens() 				{ return "uptime"; }
 	@Override public String getHelpString() 				{ return "Shows current stream uptime"; }
 

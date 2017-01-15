@@ -1,8 +1,7 @@
-package processing.server;
+package processing.functions;
 
+import data.DataManager;
 import processing.CommandBase;
-import users.PermissionClass;
-import users.UserManager;
 
 public class CommandSub extends CommandBase {
 
@@ -13,9 +12,9 @@ public class CommandSub extends CommandBase {
 		
 		if (specifiedUser != null && specifiedUser != "") user = specifiedUser;
 		
-		boolean isSubbed = UserManager.isSubbed(parent.channel, user);
-		int subLength = UserManager.getSubLength(parent.channel, user);
-		
+
+		int subLength = DataManager.getSubLength(parent.channel, user);
+		boolean isSubbed = subLength > 0;
 		String message = "@" + getUser() + ", " + 
 				(isSubbed ? user + " hase been subbed for " + subLength + " month" +
 						(subLength == 1 ? "!" : "s!") 
@@ -24,8 +23,7 @@ public class CommandSub extends CommandBase {
 		
 	}
 	
-	@Override public String getPermissionString() 			{ return "server.ksub"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
+	@Override public String getPermissionString() 			{ return "functions.sub"; }
 	@Override public String getFormatTokens() 				{ return "ksub #user"; }
 	@Override public String getHelpString() 				{ return "Use to check how long you're subbed for"; }
 

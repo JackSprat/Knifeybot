@@ -1,10 +1,9 @@
-package processing.roll;
+package processing.functions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import processing.CommandBase;
-import users.PermissionClass;
 
 public class CommandRoll extends CommandBase {
 
@@ -97,8 +96,7 @@ public class CommandRoll extends CommandBase {
 		
 	}
 
-	@Override public String getPermissionString() 			{ return "roll.roll"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
+	@Override public String getPermissionString() 			{ return "functions.roll"; }
 	@Override public String getFormatTokens() 				{ return "kroll +"; }
 	@Override public String getHelpString() 				{ return "This command rolls dice and outputs them."; }
 	

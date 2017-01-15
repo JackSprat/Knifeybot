@@ -1,8 +1,7 @@
-package processing.server;
+package processing.functions;
 
 import processing.CommandBase;
 import state.ChannelState;
-import users.PermissionClass;
 
 public class CommandStatus extends CommandBase {
 
@@ -15,8 +14,7 @@ public class CommandStatus extends CommandBase {
 		
 	}
 	
-	@Override public String getPermissionString() 			{ return "server.status"; }
-	@Override public PermissionClass getPermissionClass() 	{ return PermissionClass.User; }
+	@Override public String getPermissionString() 			{ return "functions.status"; }
 	@Override public String getFormatTokens() 				{ return "status"; }
 	@Override public String getHelpString() 				{ return "This command checks stream live status"; }
 
