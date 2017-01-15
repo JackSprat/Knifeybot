@@ -3,6 +3,7 @@ package processing.pokemon.moves;
 import java.util.concurrent.BlockingQueue;
 
 import messaging.OutgoingMessage;
+import messaging.OutgoingMessage.OutType;
 import processing.pokemon.creation.PokemonObject;
 
 public class MoveApplicator {
@@ -25,6 +26,7 @@ public class MoveApplicator {
 		if (move.hasFacet(MoveFacet.DEALS_DAMAGE)) {
 			int damage = (int) calculateDamage(user, target, move);
 			target.modifyHP(-damage);
+			listOut.add(new OutgoingMessage(OutType.CHAT, null, null, null));
 		}
 		
 		if (move.hasFacet(MoveFacet.APPLIES_STATUS_EFFECT)) {
