@@ -21,10 +21,11 @@ public class CommandPermSetGroup extends CommandBase {
 	public void execute() {
 		
 		PermissionClass editorPermClass = DataManager.getUserLevel(parent.channel, getUser());
+		PermissionClass targetPermClass = DataManager.getUserLevel(parent.channel, getToken("user"));
 		PermissionClass permClass = PermissionClass.getPermissionClass(getToken("permgroup"));
 		System.out.println(editorPermClass + ", " + permClass.ordinal());
 		
-		if (editorPermClass.ordinal() > permClass.ordinal()) {
+		if (editorPermClass.ordinal() > permClass.ordinal() && editorPermClass.ordinal() > targetPermClass.ordinal()) {
 			
 			DataManager.setUserLevel(parent.channel, getToken("user"), permClass);
 			sendReply(getToken("user") + " now has group: " + getToken("permgroup"));
