@@ -258,8 +258,9 @@ public class DataManager {
 					
 				}
 				s = rs.getString("reply");
+				s = s.replace("%counterpg", "" + counter);
 				s = s.replace("%counter", "" + counter);
-				s = s.replace("%gamecounter", "" + counter);
+				
 			}
 
 			rs.close();
