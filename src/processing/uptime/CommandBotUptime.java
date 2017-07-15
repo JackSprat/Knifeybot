@@ -18,7 +18,7 @@ public class CommandBotUptime extends CommandBase {
 						(hours < 9 ? "0" + hours : "" + hours) + ":" + 
 						(mins < 9 ? "0" + mins : "" + mins) + ":" + 
 						(secs < 9 ? "0" + secs : "" + secs);
-		sendReply(uptime);
+		sendChatReply(uptime);
 		
 	}
 	

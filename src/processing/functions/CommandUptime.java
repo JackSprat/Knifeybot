@@ -15,13 +15,13 @@ public class CommandUptime extends CommandBase {
 
 		Logger.DEBUG("Stream time live in m: " + timeDiffMins);
 
-		int hours = (int) (timeDiffMins / 60);
+		int hours = timeDiffMins / 60;
 		String uptime = "Current stream uptime: " + 
 						(hours 			< 9 ? "0" : "") + hours 		+ ":" + 
 						(timeDiffMins 	< 9 ? "0" : "") + timeDiffMins;
 		
 		String message = "Stream Uptime: " + uptime;
-		sendReply(message);
+		sendChatReply(message);
 		
 	}
 	

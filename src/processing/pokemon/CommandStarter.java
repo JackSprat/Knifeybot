@@ -11,7 +11,7 @@ public class CommandStarter extends CommandBase {
 		
 		String idToken = this.getToken("id");
 		
-		if (PokemonUser.hasUsedStarter(getUser())) { sendReply("You have already selected a starter pokemon!"); }
+		if (PokemonUser.hasUsedStarter(getUser())) { sendChatReply("You have already selected a starter pokemon!"); }
 		
 		int pokeID = 0;
 		
@@ -30,9 +30,9 @@ public class CommandStarter extends CommandBase {
 			PokemonObject po = PokemonObject.generatePokemon(1, pokeID);
 			PokemonUser.setUsedStarter(getUser());
 			PokemonUser.addPokemon(getUser(), po.getID());
-			sendReply(getUser() + ", you have selected " + po.toString() + " as your starter pokemon!");
+			sendChatReply(getUser() + ", you have selected " + po.toString() + " as your starter pokemon!");
 		} else {
-			sendReply(idToken + " is not a valid starter pokemon!");
+			sendChatReply(idToken + " is not a valid starter pokemon!");
 		}
 
 		

@@ -3,13 +3,13 @@ package processing.command;
 import java.util.concurrent.BlockingQueue;
 
 import data.DataManager;
-import messaging.OutgoingMessage;
+import messaging.outgoing.BaseOutgoingMessage;
 import processing.ProcBase;
 import state.ChannelState;
 
 public class ProcCommand extends ProcBase {
 	
-	public ProcCommand(BlockingQueue<OutgoingMessage> listOut, String channel) {
+	public ProcCommand(BlockingQueue<BaseOutgoingMessage> listOut, String channel) {
 		
 		super(listOut, channel);
 		

@@ -9,7 +9,7 @@ public class CommandRemove extends CommandBase {
 	public void execute() {
 		
 		DataManager.removeCommand(parent.channel, getToken("@alias"));
-		sendReply(getUser() + ", response \"" + getToken("@alias") + "\" deleted");
+		sendChatReply(getUser() + ", response \"" + getToken("@alias") + "\" deleted");
 		
 	}
 	

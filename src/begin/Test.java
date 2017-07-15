@@ -1,12 +1,11 @@
 package begin;
 
-import data.DataManager;
+import utils.ConfigLoader;
+
 
 public class Test {
-	public static void main (String[] args) {
-		
-		DataManager.initialiseDB();
-		DataManager.addQuote("testchannel2", "testalias", "testuser", "testquote");
-		
+
+	public static void main(String[] args) {
+		ConfigLoader.initialize();
 	}
 }

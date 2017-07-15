@@ -2,12 +2,12 @@ package processing.pokemon;
 
 import java.util.concurrent.BlockingQueue;
 
-import messaging.OutgoingMessage;
+import messaging.outgoing.BaseOutgoingMessage;
 import processing.ProcBase;
 
 public class ProcPokemon extends ProcBase {
 	
-	public ProcPokemon(BlockingQueue<OutgoingMessage> listOut, String channel) {
+	public ProcPokemon(BlockingQueue<BaseOutgoingMessage> listOut, String channel) {
 		
 		super(listOut, channel);
 		

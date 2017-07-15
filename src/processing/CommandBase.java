@@ -3,140 +3,40 @@ package processing;
 import java.util.concurrent.BlockingQueue;
 
 import data.DataManager;
-import messaging.IIncomingMessage;
-import messaging.IncomingMessage.InType;
-import messaging.OutgoingMessage;
+import messaging.incoming.IncomingIRCChatMessage;
+import messaging.outgoing.BaseOutgoingMessage;
+import messaging.outgoing.OutgoingIRCChatMessage;
 import users.PermissionClass;
 
+
 public abstract class CommandBase {
-	
-	private IIncomingMessage in;
-	private BlockingQueue<OutgoingMessage> listOut;
-	protected ProcBase parent;
-	
-	public abstract String 			getPermissionString();
-	public abstract String			getFormatTokens();
-	public abstract String			getHelpString();
-	
-	public final PermissionClass getPermissionClass() {
-		return DataManager.getPermissionClass(parent.channel, this.getPermissionString());
-	}
-	
 
-	public void setParent(ProcBase parent, BlockingQueue<OutgoingMessage> listOut) {
-		this.parent = parent;
-		this.listOut = listOut;
-	}
-	public InType[] getValidInputs() { return new InType[]{InType.COMMAND, InType.IRCCHAT}; }
-	protected boolean isMatch() { return true; }
-	protected boolean isValid() {	return true; }
+	private IncomingIRCChatMessage				ircIn;
+	private BlockingQueue<BaseOutgoingMessage>	listOut;
+	protected ProcBase							parent;
+
 	public abstract void execute();
-	
-	protected void sendReply(String message) {
-		if (in.getType().equals(InType.IRCCHAT) ||
-				in.getType().equals(InType.IRCINFO) ||
-				in.getType().equals(InType.IRCJOIN) ||
-				in.getType().equals(InType.IRCPART) ||
-				in.getType().equals(InType.POKEMON)) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.CHAT, message, parent.channel, ""));
-		} else if (in.getType().equals(InType.COMMAND)) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.COMMAND, message, parent.channel, in.getID()));
-		}
-	}
-	
-	protected void sendRaw(String message) {
-		listOut.add(new OutgoingMessage(OutgoingMessage.OutType.RAW, message, parent.channel, ""));
-	}
-	
-	protected void sendPong() {
-		if (in.getType().equals(InType.IRCPING)) {
-			listOut.add(new OutgoingMessage(OutgoingMessage.OutType.PONG, "tmi.twitch.tv\r\n", parent.channel, ""));
-		}
-	}
-	
-	
-	//Validation process for chat message
-	public boolean validate() {
-		
-		String[] formatTokens = this.getFormatTokens().split(" ");
-		String[] messageTokens = in.getTokenList().clone();
-		
-		if (!messageTokens[0].startsWith(":")) return false;
-		
-		messageTokens[0] = messageTokens[0].substring(1);
-		
-		for (int i = 0; i < formatTokens.length; i++) {
-			
-			String formatToken = formatTokens[i];
 
-			//0 or more tokens remaining
-			if (formatToken.equals("*")) break;
-			//1 or more tokens remaining
-			if (formatToken.equals("+")) {
-				if (messageTokens.length >= formatTokens.length) break;
-				
-			}
-			
-			//Optional, named
-			if (formatToken.startsWith("#")) continue;
-			
-			//Only required remaining, so quit if no message tokens remaining
-			if (messageTokens.length <= i) return false;
-			
-			String messageToken = messageTokens[i];
-			
-			//Required, named
-			if (formatToken.startsWith("@")) continue;
+	public abstract String getFormatTokens();
 
-			//Required, match only
-			String[] possibleTokens = {formatToken};
-			
-			//Split out possible matchable tokens
-			if (formatToken.contains("|")) possibleTokens = formatToken.split("|");
-			
-			//Check each token and fail if no match
-			boolean found = false;
-			for (String token : possibleTokens) {
-				if (token.equalsIgnoreCase(messageToken)) found = true;
-			}
+	public abstract String getHelpString();
 
-			if (!found) return false;
-		}
-				
-		
-		if (!isMatch()) 													return false;	//if match info is invalid (custom)
-		if (!DataManager.hasPermission(parent.channel, in.getUser(), 
-				getPermissionString()))										return false;	//if user has no permissions
-		if (!isValid())														return false;	//if command has invalid parameters (custom)
-		
-		boolean validInputType = false;
-		for (InType type : this.getValidInputs()) {
-			if (type.equals(in.getType())) {
-				validInputType = true;
-			}
-		}
-		
-		return validInputType;
-		
+	public final PermissionClass getPermissionClass() {
+		return DataManager.getPermissionClass(parent.channel, getPermissionString());
 	}
-	
+
+	public abstract String getPermissionString();
+
 	public String getToken(String token) {
-		
-		String[] formatTokens = this.getFormatTokens().split(" ");
-		String[] messageTokens = in.getTokenList();
-		
+		String[] formatTokens = getFormatTokens().split(" ");
+		String[] messageTokens = ircIn.getTokenList();
 		for (int i = 0; i < formatTokens.length; i++) {
-			
-			if (messageTokens.length <= i) return "";
-			
+			if (messageTokens.length <= i) { return ""; }
 			String formatToken = formatTokens[i];
-			
-			
-			if (	!token.equalsIgnoreCase(formatToken) && 
-					!token.equalsIgnoreCase(formatToken.substring(1))) continue;
-			
-			
-			//0 or more tokens remaining
+			if (!token.equalsIgnoreCase(formatToken) && !token.equalsIgnoreCase(formatToken.substring(1))) {
+				continue;
+			}
+			// 0 or more tokens remaining
 			if (formatToken.equals("*") || formatToken.equals("+")) {
 				String tokens = "";
 				for (int j = i; j < messageTokens.length; j++) {
@@ -144,15 +44,93 @@ public abstract class CommandBase {
 				}
 				return tokens;
 			}
-		
 			return messageTokens[i];
-			
 		}
-		
 		return "";
 	}
-	
-	public String getUser() { if (in != null) return in.getUser(); return null; }
-	public void setMessage(IIncomingMessage in2) { this.in = in2; }
 
+	public String getUser() {
+		if (ircIn != null) { return ircIn.getUser(); }
+		return null;
+	}
+
+	protected boolean isMatch() {
+		return true;
+	}
+
+	protected boolean isValid() {
+		return true;
+	}
+
+	protected void sendChatReply(String message) {
+		listOut.add(new OutgoingIRCChatMessage(message, parent.channel));
+	}
+
+	public void setIRCMessage(IncomingIRCChatMessage in2) {
+		ircIn = in2;
+	}
+
+	public void setParent(ProcBase parent, BlockingQueue<BaseOutgoingMessage> listOut) {
+		this.parent = parent;
+		this.listOut = listOut;
+	}
+
+	// Validation process for chat message
+	public boolean validate() {
+		String[] formatTokens = getFormatTokens().split(" ");
+		String[] messageTokens = ircIn.getTokenList().clone();
+		if (!messageTokens[0].startsWith(":")) { return false; }
+		messageTokens[0] = messageTokens[0].substring(1);
+		for (int i = 0; i < formatTokens.length; i++) {
+			String formatToken = formatTokens[i];
+			// 0 or more tokens remaining
+			if (formatToken.equals("*")) {
+				break;
+			}
+			// 1 or more tokens remaining
+			if (formatToken.equals("+")) {
+				if (messageTokens.length >= formatTokens.length) {
+					break;
+				}
+			}
+			// Optional, named
+			if (formatToken.startsWith("#")) {
+				continue;
+			}
+			// Only required remaining, so quit if no message tokens remaining
+			if (messageTokens.length <= i) { return false; }
+			String messageToken = messageTokens[i];
+			// Required, named
+			if (formatToken.startsWith("@")) {
+				continue;
+			}
+			// Required, match only
+			String[] possibleTokens = { formatToken };
+			// Split out possible matchable tokens
+			if (formatToken.contains("|")) {
+				possibleTokens = formatToken.split("|");
+			}
+			// Check each token and fail if no match
+			boolean found = false;
+			for (String token : possibleTokens) {
+				if (token.equalsIgnoreCase(messageToken)) {
+					found = true;
+				}
+			}
+			if (!found) { return false; }
+		}
+		if (!isMatch()) { return false; // if match info is invalid (custom)
+		}
+		if (!DataManager.hasPermission(parent.channel, ircIn.getUser(), getPermissionString())) { return false;
+		// if
+		// user
+		// has
+		// no
+		// permissions
+		}
+		if (!isValid()) { return false; // if command has invalid parameters
+										// (custom)
+		}
+		return true;
+	}
 }

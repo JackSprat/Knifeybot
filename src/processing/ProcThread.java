@@ -3,41 +3,32 @@ package processing;
 import java.util.ArrayList;
 
 import logger.Logger;
-import messaging.IIncomingMessage;
+import messaging.incoming.BaseIncomingMessage;
+
 
 public class ProcThread {
 
 	private ArrayList<ProcBase> processors;
-	
-	public void process(IIncomingMessage in) {
 
-		if (in != null) {
-			processMessage(in);
-		}
-		
-		tick();
-		
-	}
-	
-	public ProcThread (ArrayList<ProcBase> processors) {
+	public ProcThread(ArrayList<ProcBase> processors) {
 		this.processors = processors;
 	}
-	
-	private void processMessage(IIncomingMessage in) {
-		
-		for (ProcBase proc : processors) {
-			try {
-				proc.parseMessage(in);
-			} catch (Exception e) {
-				Logger.WARNING(e.getMessage());
-				e.printStackTrace();
+
+	public void process(BaseIncomingMessage in) {
+		if (in != null) {
+			for (ProcBase proc : processors) {
+				try {
+					proc.parseMessage(in);
+				} catch (Exception e) {
+					Logger.WARNING(e.getMessage());
+					e.printStackTrace();
+				}
 			}
 		}
-
+		tick();
 	}
-	
+
 	private void tick() {
-		
 		for (ProcBase proc : processors) {
 			try {
 				proc.tick();
@@ -46,7 +37,5 @@ public class ProcThread {
 				e.printStackTrace();
 			}
 		}
-		
 	}
-
 }

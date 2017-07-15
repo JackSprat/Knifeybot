@@ -9,7 +9,7 @@ public class CommandQuoteAdd extends CommandBase {
 	public void execute() {
 		
 		DataManager.addQuote(parent.channel, getToken("alias"), getToken("user"), getToken("+"));
-		sendReply(getUser() + ", quote added pokketGOOD");
+		sendChatReply(getUser() + ", quote added pokketGOOD");
 		
 	}
 	

@@ -21,7 +21,7 @@ public class CommandQuoteView extends CommandBase {
 		
 		String q1 = ((ProcQuoter)parent).getQuote(getToken("alias"));
 		if (q1 == null || q1 == "") {
-			sendReply("Can't find quote pokketFeels");
+			sendChatReply("Can't find quote pokketFeels");
 			return false;
 		}
 		
@@ -33,11 +33,11 @@ public class CommandQuoteView extends CommandBase {
 	public void execute() {
 		
 		if (getToken("alias").equalsIgnoreCase("random")) {
-			sendReply(DataManager.getRandomQuote(parent.channel));
+			sendChatReply(DataManager.getRandomQuote(parent.channel));
 			return;
 		}
 
-		sendReply(((ProcQuoter)parent).getQuote(getToken("alias")));
+		sendChatReply(((ProcQuoter)parent).getQuote(getToken("alias")));
 		
 	}
 

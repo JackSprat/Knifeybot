@@ -9,7 +9,7 @@ public class CommandAdd extends CommandBase {
 	public void execute() {
 		
 		DataManager.addCommand(parent.channel, getToken("@alias"), getToken("+"));
-		sendReply(getUser() + ", global response \"" + getToken("@alias") + "\" added");
+		sendChatReply(getUser() + ", global response \"" + getToken("@alias") + "\" added");
 		
 	}
 

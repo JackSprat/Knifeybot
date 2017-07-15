@@ -7,7 +7,7 @@ import utils.TextUtils;
 
 public class Logger {
 
-	private static LoggingLevel logLevel = LoggingLevel.INFO; 
+	private static LoggingLevel logLevel = LoggingLevel.TRACE; 
 	
 	public static void TRACE	(String messageIn) { logError(messageIn, LoggingLevel.TRACE); }
 	public static void DEBUG	(String messageIn) { logError(messageIn, LoggingLevel.DEBUG); }

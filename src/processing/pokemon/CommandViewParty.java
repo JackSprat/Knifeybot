@@ -18,7 +18,7 @@ public class CommandViewParty extends CommandBase {
 			message += po == null ? "ERROR" : po.toString() + ", ";
 		}
 		
-		sendReply(message);
+		sendChatReply(message);
 
 		
 	}

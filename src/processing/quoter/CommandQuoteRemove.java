@@ -11,7 +11,7 @@ public class CommandQuoteRemove extends CommandBase {
 		String q1 = ((ProcQuoter)parent).getQuote(getToken("ID"));
 		
 		if (q1 == null || q1 == "") {
-			sendReply("Can't find quote pokketFeels");
+			sendChatReply("Can't find quote pokketFeels");
 			return false;
 		}
 		
@@ -25,8 +25,8 @@ public class CommandQuoteRemove extends CommandBase {
 		int id = 0;
 		try {
 			id = Integer.parseInt(getToken("ID"));
-		} catch (@SuppressWarnings("unused") NumberFormatException nfe) {
-			sendReply(getToken("ID") + " is not a valid quote ID");
+		} catch (NumberFormatException nfe) {
+			sendChatReply(getToken("ID") + " is not a valid quote ID");
 		}
 		
 		String q = ((ProcQuoter)parent).getQuote(getToken("ID"));
@@ -34,11 +34,11 @@ public class CommandQuoteRemove extends CommandBase {
 		if (q != null) {
 			
 			DataManager.removeQuote(parent.channel, id);
-			sendReply("Quote " + id + " deleted");
+			sendChatReply("Quote " + id + " deleted");
 
 		}
 		
-		sendReply(getToken("ID") + " is not a valid quote ID");
+		sendChatReply(getToken("ID") + " is not a valid quote ID");
 
 	}
 

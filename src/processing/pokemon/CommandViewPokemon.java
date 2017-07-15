@@ -51,7 +51,7 @@ public class CommandViewPokemon extends CommandBase {
 			}
 		}
 		
-		sendReply(message);
+		sendChatReply(message);
 
 		
 	}

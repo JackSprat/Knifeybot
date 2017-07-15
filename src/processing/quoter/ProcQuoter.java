@@ -3,12 +3,12 @@ package processing.quoter;
 import java.util.concurrent.BlockingQueue;
 
 import data.DataManager;
-import messaging.OutgoingMessage;
+import messaging.outgoing.BaseOutgoingMessage;
 import processing.ProcBase;
 
 public class ProcQuoter extends ProcBase {
 	
-	public ProcQuoter(BlockingQueue<OutgoingMessage> listOut, String channel) {
+	public ProcQuoter(BlockingQueue<BaseOutgoingMessage> listOut, String channel) {
 		
 		super(listOut, channel);
 		commands.add(new CommandQuoteView());
@@ -21,7 +21,7 @@ public class ProcQuoter extends ProcBase {
 		try {
 			int id = Integer.parseInt(alias);
 			return DataManager.getQuote(channel, id);
-		} catch (@SuppressWarnings("unused") NumberFormatException nfe) {
+		} catch (NumberFormatException nfe) {
 			return DataManager.getQuote(channel, alias);
 		}
 		

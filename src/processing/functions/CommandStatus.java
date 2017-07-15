@@ -10,7 +10,7 @@ public class CommandStatus extends CommandBase {
 		
 		boolean isLive = ChannelState.isStreamLive(parent.channel);
 		String message = isLive ? "Stream is live! \\ MrDestructoid /" : "Stream is not live pokketFeels";
-		sendReply(message);
+		sendChatReply(message);
 		
 	}
 	

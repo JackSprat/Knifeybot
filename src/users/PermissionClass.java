@@ -17,7 +17,7 @@ public enum PermissionClass {
 		case 3: return Mod;
 		case 4: return Admin;
 		case 5: return SuperAdmin;
-		default: return User;
+		default: return null;
 		}
 	}
 	
@@ -29,7 +29,7 @@ public enum PermissionClass {
 		case "mod": return Mod;
 		case "admin": return Admin;
 		case "superadmin": return SuperAdmin;
-		default: return User;
+		default: return null;
 		}
 	}
 	

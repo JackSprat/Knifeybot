@@ -2,13 +2,13 @@ package processing.pokemon.moves;
 
 import java.util.concurrent.BlockingQueue;
 
-import messaging.OutgoingMessage;
-import messaging.OutgoingMessage.OutType;
+import messaging.outgoing.BaseOutgoingMessage;
+import messaging.outgoing.BaseOutgoingMessage.MessageDestination;
 import processing.pokemon.creation.PokemonObject;
 
 public class MoveApplicator {
 
-	public static void applyMove(PokemonObject user, PokemonObject target, Move move, BlockingQueue<OutgoingMessage> listOut) {
+	public static void applyMove(PokemonObject user, PokemonObject target, Move move, BlockingQueue<BaseOutgoingMessage> listOut) {
 		
 		if (move.hasFacet(MoveFacet.MAKES_CONTACT)) {
 			//NULLIFY MOVE IF MAKES CONTACT
@@ -26,7 +26,7 @@ public class MoveApplicator {
 		if (move.hasFacet(MoveFacet.DEALS_DAMAGE)) {
 			int damage = (int) calculateDamage(user, target, move);
 			target.modifyHP(-damage);
-			listOut.add(new OutgoingMessage(OutType.CHAT, null, null, null));
+			listOut.add(new BaseOutgoingMessage(MessageDestination.IRCCHAT, null, null, null));
 		}
 		
 		if (move.hasFacet(MoveFacet.APPLIES_STATUS_EFFECT)) {

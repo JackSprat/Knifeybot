@@ -19,7 +19,7 @@ public class CommandMath extends CommandBase {
 		
 		Expression e = new Expression(message);
 		
-		sendReply("Result: " + e.getExpressionString() + " = " + e.calculate());
+		sendChatReply("Result: " + e.getExpressionString() + " = " + e.calculate());
 		
 	}
 

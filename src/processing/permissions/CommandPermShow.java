@@ -12,7 +12,7 @@ public class CommandPermShow extends CommandBase {
 		
 		if (specifiedUser != null && specifiedUser != "") user = specifiedUser;
 		
-		sendReply(user + " has group: " + DataManager.getUserLevel(parent.channel, user));
+		sendChatReply(user + " has group: " + DataManager.getUserLevel(parent.channel, user));
 
 	}
 

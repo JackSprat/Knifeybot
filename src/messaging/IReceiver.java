@@ -1,11 +1,8 @@
 package messaging;
 
-import java.net.Socket;
-
 public interface IReceiver extends Runnable {
 	
-	public abstract void setSocket(Socket s);
-
+	@Override
 	public abstract void run();
 
 	public abstract void endExecution();

@@ -7,7 +7,7 @@ public class CommandHelpView extends CommandBase {
 	@Override
 	public void execute() {
 		
-		sendReply("A list of Knifeybot commands can be found at http://www.js47.co.uk/knifeybot/help.php?=" + parent.channel);
+		sendChatReply("A list of Knifeybot commands can be found at http://www.js47.co.uk/knifeybot/help.php?=" + parent.channel);
 		
 	}
 	

@@ -36,7 +36,7 @@ public class CommandUpdateCounter extends CommandBase {
 			try {
 				int i = Integer.parseInt(amountToken);
 				amount = i;
-			} catch (@SuppressWarnings("unused") NumberFormatException nfe) {
+			} catch (NumberFormatException nfe) {
 				amount = 0;
 			}
 		}
